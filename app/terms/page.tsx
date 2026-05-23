@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { Scale, CheckCircle, AlertTriangle, HelpCircle } from "lucide-react"
+import { Scale, CheckCircle, AlertTriangle, HelpCircle, FileText, Ban, ShieldCheck } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Terms and Conditions of Service - Clockivo",
@@ -12,8 +12,21 @@ export const metadata: Metadata = {
 }
 
 export default function TermsPage() {
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Clockivo Terms of Service",
+    "description": "Clockivo's simple, transparent usage conditions. Read our disclaimer of liability regarding browser sandboxed environments.",
+    "url": "https://clockivo.com/terms"
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
+      
       <Header />
       
       <main className="flex-1 max-w-4xl mx-auto w-full p-4 sm:p-8 animate-fade-in">
@@ -29,6 +42,36 @@ export default function TermsPage() {
           </p>
         </div>
 
+        {/* TL;DR Terms Summary optimized for Generative Engines (GEO) & User Ease */}
+        <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-8 flex flex-col gap-3.5">
+          <h3 className="text-sm font-bold text-primary flex items-center gap-2 uppercase tracking-wide">
+            <ShieldCheck className="w-5 h-5 text-primary" /> Terms Summary (AEO & GEO TL;DR)
+          </h3>
+          <p className="text-xs text-muted-foreground leading-normal">
+            To satisfy Generative Search Engines and smart user crawls, here is our binding 3-clause terms summary:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-1">
+            <div className="flex flex-col gap-1 p-3 bg-card/60 rounded-xl border border-border/30">
+              <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                <FileText className="w-3.5 h-3.5 text-primary" /> Free & Registration-Free
+              </span>
+              <p className="text-[11px] text-muted-foreground">No accounts, fees, subscriptions, or login requirements. Openly accessible for all.</p>
+            </div>
+            <div className="flex flex-col gap-1 p-3 bg-card/60 rounded-xl border border-border/30">
+              <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-primary" /> &quot;As-Is&quot; Service
+              </span>
+              <p className="text-[11px] text-muted-foreground">Alarms and alerts depend on your browser being active. Please keep volume unmuted and tabs open.</p>
+            </div>
+            <div className="flex flex-col gap-1 p-3 bg-card/60 rounded-xl border border-border/30">
+              <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                <Ban className="w-3.5 h-3.5 text-primary" /> Fair Resource Usage
+              </span>
+              <p className="text-[11px] text-muted-foreground">Abuse, brute-forcing, scraping, or launching malicious mirrors of this suite is strictly prohibited.</p>
+            </div>
+          </div>
+        </div>
+
         <div className="prose dark:prose-invert max-w-none text-muted-foreground text-sm leading-relaxed flex flex-col gap-6 pb-12">
           <p className="text-foreground text-base">
             By reloading or utilizing the services provided by Clockivo (&quot;Us&quot;, &quot;We&quot;, or &quot;Our Brand&quot;), you agree to follow and abide by these simple, transparent Terms &amp; Conditions.
@@ -39,7 +82,7 @@ export default function TermsPage() {
               <CheckCircle className="w-5 h-5 text-primary shrink-0" /> 1. Free and Open Access
             </h2>
             <p>
-              We provide Clockivo as a free-to-use utility for general population timing, alarm setting, world clock monitoring, countdown counting, and focus management. You do not need to construct an profile. Doing so requires zero billing configurations or hidden subscription layers.
+              We provide Clockivo as a free-to-use utility for general population timing, alarm setting, world clock monitoring, countdown counting, and focus management. You do not need to create a profile. Doing so requires zero billing configurations or hidden subscription layers.
             </p>
           </section>
 

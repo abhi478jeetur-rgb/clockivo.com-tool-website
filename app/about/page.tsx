@@ -12,8 +12,25 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About Clockivo",
+    "description": "Clockivo is a browser-first timing suite engineered to deliver high utility without cognitive overload, visual clutter, or database trackers.",
+    "url": "https://clockivo.com/about",
+    "mainEntity": {
+      "@type": "SoftwareApplication",
+      "name": "Clockivo browser-first timing app",
+      "applicationCategory": "UtilitiesApplication"
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
       <Header />
       
       <main className="flex-1 max-w-4xl mx-auto w-full p-4 sm:p-8">

@@ -1,0 +1,24 @@
+{
+  "name": "Clockivo - Online Time Tools",
+  "short_name": "Clockivo",
+  "description": "An elegant, browser-first, and completely secure timing suite with customizable alarms, countdown timers, stopwatch split sheets, and world clocks.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

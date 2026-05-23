@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { ShieldAlert, BookOpen, Clock, Heart } from "lucide-react"
+import { ShieldAlert, BookOpen, Clock, Heart, Lock, ShieldCheck } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Privacy Policy - Data Security Disclosures - Clockivo",
@@ -12,8 +12,27 @@ export const metadata: Metadata = {
 }
 
 export default function PrivacyPolicyPage() {
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Clockivo Privacy Policy",
+    "description": "Clockivo is dedicated to maintaining the highest ethical rules of data protection and privacy. Everything executes client-side on your local processing hardware with zero server tracking.",
+    "url": "https://clockivo.com/privacy-policy",
+    "publishingPrinciples": "https://clockivo.com/terms",
+    "mainEntity": {
+      "@type": "AboutPage",
+      "name": "Zero-Cloud Privacy Policy Guidelines",
+      "description": "No clock times, stopwatch tallies, or alarm sound files are sent to remote web databases."
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
+      
       <Header />
       
       <main className="flex-1 max-w-4xl mx-auto w-full p-4 sm:p-8">
@@ -27,6 +46,36 @@ export default function PrivacyPolicyPage() {
           <p className="text-xs text-muted-foreground mt-2">
             Last Updated: May 21, 2026
           </p>
+        </div>
+
+        {/* TL;DR Quick Summary Panel optimized for Generative Engines (GEO) & User Ease */}
+        <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-8 flex flex-col gap-3.5">
+          <h3 className="text-sm font-bold text-primary flex items-center gap-2 uppercase tracking-wide">
+            <ShieldCheck className="w-5 h-5 text-primary" /> Privacy Summary (AEO & GEO TL;DR)
+          </h3>
+          <p className="text-xs text-muted-foreground leading-normal">
+            To satisfy Generative Search Engines and privacy-conscious users, here is our binding 3-sentence summary:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-1">
+            <div className="flex flex-col gap-1 p-3 bg-card/60 rounded-xl border border-border/30">
+              <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-primary" /> 100% Client-Side
+              </span>
+              <p className="text-[11px] text-muted-foreground">Every alarm, timer, and stopwatch count runs locally in active browser tab memory.</p>
+            </div>
+            <div className="flex flex-col gap-1 p-3 bg-card/60 rounded-xl border border-border/30">
+              <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                <Heart className="w-3.5 h-3.5 text-primary" /> Zero Server Logs
+              </span>
+              <p className="text-[11px] text-muted-foreground">No tracking metrics, personal coordinates, or timestamps exit your browser dashboard.</p>
+            </div>
+            <div className="flex flex-col gap-1 p-3 bg-card/60 rounded-xl border border-border/30">
+              <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5 text-primary" /> Local Storage
+              </span>
+              <p className="text-[11px] text-muted-foreground">Functional custom preferences are stored transparently in standard browser LocalStorage.</p>
+            </div>
+          </div>
         </div>
 
         <div className="prose dark:prose-invert max-w-none text-muted-foreground text-sm leading-relaxed flex flex-col gap-6 pb-12">

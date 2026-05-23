@@ -6,8 +6,15 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Play, Square, RotateCcw, Plus, History } from "lucide-react"
-import { playAlarmSound } from "@/lib/audio"
+import * as audioLib from "@/lib/audio"
 import { SoundSettings } from "./sound-settings"
+import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
+
+const playAlarmSound = () => {
+  if (audioLib && typeof audioLib.playAlarmSound === "function") {
+    audioLib.playAlarmSound()
+  }
+}
 
 interface TimerSession {
    id: string; label: string; duration: number; completedAt: string;
@@ -27,6 +34,53 @@ export default function Timer() {
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const endTimeRef = useRef<number | null>(null)
+  const wakeLockRef = useRef<any>(null)
+
+  // Screen Wake Lock API management
+  useEffect(() => {
+    const requestWakeLock = async () => {
+      if (typeof window === 'undefined' || !('wakeLock' in navigator)) return
+      try {
+        if (!wakeLockRef.current) {
+          wakeLockRef.current = await (navigator as any).wakeLock.request('screen')
+          console.log("🔒 Clockivo: Timer acquired Screen Wake Lock!")
+        }
+      } catch (err) {
+        console.warn("🔒 Clockivo: Timer Screen Wake Lock failed:", err)
+      }
+    }
+
+    const releaseWakeLock = async () => {
+      if (wakeLockRef.current) {
+        try {
+          await wakeLockRef.current.release()
+          wakeLockRef.current = null
+          console.log("🔓 Clockivo: Timer released Screen Wake Lock!")
+        } catch (err) {
+          console.warn("🔓 Clockivo: Timer Screen Wake Lock release failed:", err)
+        }
+      }
+    }
+
+    if (isRunning) {
+      requestWakeLock()
+    } else {
+      releaseWakeLock()
+    }
+
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible' && isRunning) {
+        await requestWakeLock()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      releaseWakeLock()
+    }
+  }, [isRunning])
 
   const saveHistory = (sessions: TimerSession[]) => {
       setHistory(sessions)
@@ -155,6 +209,27 @@ export default function Timer() {
     }
   }
 
+  // Keyboard Shortcuts for Timer using the useKeyboardShortcut hook
+  useKeyboardShortcut("Space", () => {
+    if (isRunning) {
+      stopTimer()
+    } else {
+      startTimer()
+    }
+  })
+
+  useKeyboardShortcut("KeyR", () => {
+    if (!isEditing) {
+      resetTimer()
+    }
+  })
+
+  useKeyboardShortcut("Escape", () => {
+    if (!isEditing) {
+      editTimer()
+    }
+  })
+
   const handleInputChange = (setter: (val: string) => void, max: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '')
     if (val.length > 2) val = val.slice(-2)
@@ -210,11 +285,45 @@ export default function Timer() {
           </div>
         </div>
       ) : (
-        <div 
-          className="font-mono text-7xl sm:text-[10rem] leading-none sm:leading-none font-bold tracking-tighter tabular-nums text-foreground mb-12 hover:opacity-80 cursor-pointer transition-opacity"
-          onClick={editTimer}
-        >
-          {formatDisplayTime(timeLeft)}
+        <div className="relative flex items-center justify-center w-64 h-64 sm:w-80 sm:h-80 mb-12 select-none">
+          {/* SVG Progress Circle with neat transitions */}
+          <svg className="absolute w-full h-full -rotate-90 scale-x-[-1]" viewBox="0 0 240 240">
+            {/* Background track */}
+            <circle
+              cx="120"
+              cy="120"
+              r="100"
+              className="stroke-muted/30"
+              strokeWidth="6"
+              fill="transparent"
+            />
+            {/* Pulsing circular track when running */}
+            <circle
+              cx="120"
+              cy="120"
+              r="100"
+              className={`stroke-primary transition-all duration-300 ${isRunning ? 'opacity-100 shadow-md animate-pulse-slow' : 'opacity-90'}`}
+              strokeWidth="6"
+              fill="transparent"
+              strokeDasharray={2 * Math.PI * 100}
+              strokeDashoffset={2 * Math.PI * 100 * (1 - (timeLeft / initialTime))}
+              strokeLinecap="round"
+              style={{ transition: "stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1)" }}
+            />
+          </svg>
+          
+          <div 
+            className="z-10 flex flex-col items-center justify-center text-center cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+            onClick={editTimer}
+            title="Click to customize timer duration"
+          >
+            <span className="font-mono text-5xl sm:text-6xl font-bold tracking-tighter tabular-nums text-foreground leading-none">
+              {formatDisplayTime(timeLeft)}
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-2 bg-muted/40 px-2.5 py-1 rounded-full hover:bg-muted/60 transition-colors">
+              Edit
+            </span>
+          </div>
         </div>
       )}
 

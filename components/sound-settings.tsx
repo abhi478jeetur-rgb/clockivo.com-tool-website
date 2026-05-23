@@ -7,7 +7,26 @@ import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Settings2, Volume2 } from "lucide-react"
-import { getSoundSettings, setSoundSettings, playAlarmSound } from "@/lib/audio"
+import * as audioLib from "@/lib/audio"
+
+const getSoundSettings = () => {
+    if (audioLib && typeof audioLib.getSoundSettings === "function") {
+        return audioLib.getSoundSettings()
+    }
+    return { volume: 50, type: "sine", speed: "normal" }
+}
+
+const setSoundSettings = (settings: any) => {
+    if (audioLib && typeof audioLib.setSoundSettings === "function") {
+        audioLib.setSoundSettings(settings)
+    }
+}
+
+const playAlarmSound = () => {
+    if (audioLib && typeof audioLib.playAlarmSound === "function") {
+        audioLib.playAlarmSound()
+    }
+}
 
 export function SoundSettings() {
     const [volume, setVolume] = useState(50)

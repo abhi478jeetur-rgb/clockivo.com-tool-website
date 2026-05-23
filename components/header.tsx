@@ -1,14 +1,24 @@
 "use client"
 
-import { Clock as ClockIcon } from "lucide-react"
 import { ModeToggle } from "@/components/mode-toggle"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function Header() {
   return (
     <header className="border-b px-6 py-4 flex items-center justify-between sticky top-0 bg-background/80 backdrop-blur z-50">
-      <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-        <ClockIcon className="w-6 h-6 text-primary" />
+      <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+        <div className="relative w-7 h-7 overflow-hidden rounded-full border border-border/40">
+          <Image 
+            src="/clockivo-logo.png" 
+            alt="Clockivo Logo" 
+            width={28} 
+            height={28} 
+            className="object-cover"
+            priority
+            referrerPolicy="no-referrer"
+          />
+        </div>
         <span className="text-xl font-bold tracking-tight">Clockivo</span>
       </Link>
       <div className="flex items-center gap-4">

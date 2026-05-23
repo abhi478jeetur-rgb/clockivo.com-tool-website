@@ -2,11 +2,12 @@ import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Timer from "@/components/timer"
-import { Hourglass, PlayCircle, History, Sparkles } from "lucide-react"
+import { Hourglass, HelpCircle } from "lucide-react"
+import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Online Countdown Timer - Free Productivity Study Clock",
-  description: "Set a free online countdown timer with loud audio feedback. Ideal for cooking, studying, workouts, and Pomodoro focus blocks. View completed session histories locally.",
+  title: "Free Online Timer & Countdown for Study, Work & Cooking | Clockivo",
+  description: "Need a browser countdown? Set a free online timer to manage your study, work, cooking, and focus sessions. Customize sound alerts and keep track of your time.",
   alternates: {
     canonical: "/timer",
   },
@@ -15,27 +16,76 @@ export const metadata: Metadata = {
 export default function TimerPage() {
   const schemaData = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Clockivo Online Countdown Timer",
-    "operatingSystem": "All",
-    "applicationCategory": "UtilitiesApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "description": "Set a free online countdown timer with loud audio feedback. Ideal for cooking, studying, workouts, and Pomodoro focus blocks. View completed session histories.",
-    "softwareVersion": "1.0",
-    "browserRequirements": "Requires a modern browser with HTML5 Web Audio support (e.g. Chrome, Firefox, Safari, Edge)",
-    "author": {
-      "@type": "Organization",
-      "name": "Clockivo",
-      "url": "https://clockivo.com"
-    }
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "Clockivo Online Countdown Timer",
+        "operatingSystem": "All",
+        "applicationCategory": "UtilitiesApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Set a free online countdown timer to manage your study, work, cooking, and focus sessions. Track intervals, customize sounds, and keep your timing open.",
+        "softwareVersion": "1.0",
+        "browserRequirements": "Requires a modern browser with HTML5 Web Audio support (e.g. Chrome, Firefox, Safari, Edge)",
+        "author": {
+          "@type": "Organization",
+          "name": "Clockivo",
+          "url": "https://clockivo.com"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Will the timer ring if I minimize the browser?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, the timer will keep counting down if you minimize the browser window or switch to other tabs. However, since modern browsers may throttle background processes to save power, we recommend keeping the window active or testing it quickly beforehand."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use this timer for study or work sessions?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolutely. This tool works perfectly as a free focus timer for studying or a browser timer for work. You can set study blocks (like 25-minute Pomodoro sessions) and hear an audio alert once the countdown is finished."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does the timer keep running if my computer sleeps?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Web browsers pause layout and timing tasks when your computer goes into sleep, standby, or hibernation modes. Your device must remain awake and active with the browser open for the countdown to complete and sound correctly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use it for cooking or workouts?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! It can be used as a simple online cooking timer on your desktop or an online workout timer with intervals. Just set the required time on your laptop or PC and let it trigger the audio notification upon completion."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why do I need to keep the tab open?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The timing loop and active session are maintained purely in your open browser tab. If you close the page or shut down your browser, your countdown session will be deleted and the timer will stop immediately."
+            }
+          }
+        ]
+      }
+    ]
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-transparent text-foreground">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
@@ -48,10 +98,10 @@ export default function TimerPage() {
             <Hourglass className="w-4 h-4" /> Clockivo Utility Tool
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            Online Countdown Timer
+            Free Online Countdown Timer
           </h1>
-          <p className="text-muted-foreground text-base max-w-2.5xl leading-relaxed">
-            Configure hours, minutes, and seconds to run an instant, highly accurate browser-based countdown. Equipped with customizable alarm warnings, persistent local history, and rapid presets.
+          <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
+            Set an online countdown timer directly in your browser. Perfect for study sessions, focus blocks, workouts, and cooking, this simple timer works on any PC, laptop, or Mac. Pick your hours, minutes, and seconds, and start tracking your time without installing any apps.
           </p>
         </div>
 
@@ -61,45 +111,126 @@ export default function TimerPage() {
         </div>
 
         {/* SEO On-Page Content Foundations */}
-        <section className="border-t pt-10 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-foreground pb-12">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
-              <PlayCircle className="w-5 h-5 text-primary" /> How to Use the Countdown Timer
+        <section className="border-t pt-10 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
+          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
+            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
+              <span className="w-2 h-2 rounded-full bg-primary" /> How to Use This Browser Timer
             </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              Our timer is optimized for rapid setup. Simply click on the hours, minutes, or seconds display block (or press the edit action) to inputs your target time. You can also utilize our rapid predefined increment pads to quickly add minutes or hours.
-            </p>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Once you trigger the <strong>Start</strong> engine, our countdown ticks down smoothly using precise high-frequency browser intervals. You can pause or reset the timer at any moment.
+              To start a countdown, set the hours, minutes, and seconds using our timing interface, or click on the quick preset buttons to add time immediately. Press the play button to start the countdown. You can pause or reset the timer at any time, and your active countdown tracks clearly in the browser tab title.
             </p>
           </div>
 
-          <div>
-            <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
-              <History className="w-5 h-5 text-primary" /> Track Focus Session History
+          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
+            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
+              <span className="w-2 h-2 rounded-full bg-primary" /> Popular Uses: Study, Workouts, Cooking, and Meetings
             </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              Improve your time management skills. Clockivo silently preserves complete logs of all successfully finished countdown durations inside your localized storage engine.
-            </p>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Review exactly when and how long you practiced, cooked, or coded using our <strong>Session History</strong> drawer, keeping you accountable without cloud synchronization lags.
+              This flexible web clock is perfect as an online study timer with sound, a presentation timer, or a 25 minute pomodoro timer online. Teachers can use it for classroom activities, chefs can monitor recipes as an online cooking timer, and gym enthusiasts can measure workout intervals without downloading any apps.
             </p>
           </div>
 
-          <div className="md:col-span-2">
-            <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" /> Ideal Applications
+          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
+            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
+              <span className="w-2 h-2 rounded-full bg-primary" /> Timer Features That Help You Stay on Track
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-muted-foreground">
-              <div className="border rounded-xl p-4 bg-muted/10">
-                <strong className="text-foreground block mb-1">Study & Pomodoro</strong> Set a 25-minute study chunk followed by a refreshing 5-minute breather to maintain peak cognitive stamina.
-              </div>
-              <div className="border rounded-xl p-4 bg-muted/10">
-                <strong className="text-foreground block mb-1">Culinary Tracker</strong> Ensure your recipes boil, bake, or roast perfectly using multiple active timers across browser tabs.
-              </div>
-              <div className="border rounded-xl p-4 bg-muted/10">
-                <strong className="text-foreground block mb-1">Gym & HIIT</strong> Alternate rest states and intense muscular intervals precisely with clear mechanical alarms.
-              </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Our countdown tool operates inside any browser window on Chromebooks, PCs, laptops, and Macs. You can choose from standard alert noises, review your local session history, and run multiple timers by opening other tabs. It offers a clean visual interface that adapts nicely to full screen.
+            </p>
+          </div>
+
+          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
+            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
+              <span className="w-2 h-2 rounded-full bg-primary" /> Important Browser and Device Notes
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Because browsers limit timing operations and JavaScript in hidden tabs, we recommend keeping this window visible to ensure audio cues play exactly on schedule. If your system goes to sleep or you close the browser tab, the timer will be paused or lost.
+            </p>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="border-t pt-10 pb-12">
+          <h2 className="text-2xl font-extrabold tracking-tight mb-6 flex items-center gap-2 text-foreground">
+            <HelpCircle className="w-6 h-6 text-primary" /> Frequently Asked Questions
+          </h2>
+          <div className="space-y-6">
+            <div className="bg-card/25 p-5 rounded-2xl border border-border/30">
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-1.5">
+                Will the timer ring if I minimize the browser?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Yes, the timer will keep counting down if you minimize the browser window or switch to other tabs. However, since modern browsers may throttle background processes to save power, we recommend keeping the window active or testing it quickly beforehand.
+              </p>
+            </div>
+
+            <div className="bg-card/25 p-5 rounded-2xl border border-border/30">
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-1.5">
+                Can I use this timer for study or work sessions?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Absolutely. This tool works perfectly as a free focus timer for studying or a browser timer for work. You can set study blocks (like 25-minute Pomodoro sessions) and hear an audio alert once the countdown is finished.
+              </p>
+            </div>
+
+            <div className="bg-card/25 p-5 rounded-2xl border border-border/30">
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-1.5">
+                Does the timer keep running if my computer sleeps?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                No. Web browsers pause layout and timing tasks when your computer goes into sleep, standby, or hibernation modes. Your device must remain awake and active with the browser open for the countdown to complete and sound correctly.
+              </p>
+            </div>
+
+            <div className="bg-card/25 p-5 rounded-2xl border border-border/30">
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-1.5">
+                Can I use it for cooking or workouts?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Yes! It can be used as a simple online cooking timer on your desktop or an online workout timer with intervals. Just set the required time on your laptop or PC and let it trigger the audio notification upon completion.
+              </p>
+            </div>
+
+            <div className="bg-card/25 p-5 rounded-2xl border border-border/30">
+              <h3 className="font-bold text-foreground text-sm sm:text-base mb-1.5">
+                Why should I keep the tab open?
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                The timing loop and active session are maintained purely in your open browser tab. If you close the page or shut down your browser, your countdown session will be deleted and the timer will stop immediately.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Internal Links Block */}
+        <section className="border-t pt-8 pb-12">
+          <h2 className="text-lg font-bold tracking-tight mb-4 text-foreground">Explore More Precision Web Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div className="bg-muted/30 p-4 rounded-xl border border-border/20">
+              <p className="text-muted-foreground mb-1">
+                If you need to set a wake-up call or a scheduled reminder, try our browser alarm.
+              </p>
+              <Link href="/alarm-clock" className="font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                Online Alarm Clock &rarr;
+              </Link>
+            </div>
+
+            <div className="bg-muted/30 p-4 rounded-xl border border-border/20">
+              <p className="text-muted-foreground mb-1">
+                To measure intermediate split times or track laps during workouts, launch our high-accuracy split timer.
+              </p>
+              <Link href="/stopwatch" className="font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                Online Stopwatch &rarr;
+              </Link>
+            </div>
+
+            <div className="bg-muted/30 p-4 rounded-xl border border-border/20">
+              <p className="text-muted-foreground mb-1">
+                Keep track of global time zones and local times in major cities instantly.
+              </p>
+              <Link href="/world-clock" className="font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                World Clock &rarr;
+              </Link>
             </div>
           </div>
         </section>

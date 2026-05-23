@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Play, Square, Flag, RotateCcw, History } from "lucide-react"
+import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
 
 interface Session {
     id: string;
@@ -20,6 +21,58 @@ export default function Stopwatch() {
   
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const lastUpdateRef = useRef<number>(0)
+  const wakeLockRef = useRef<any>(null)
+  const timeRef = useRef<number>(0)
+
+  useEffect(() => {
+    timeRef.current = time
+  }, [time])
+
+  // Screen Wake Lock API management
+  useEffect(() => {
+    const requestWakeLock = async () => {
+      if (typeof window === 'undefined' || !('wakeLock' in navigator)) return
+      try {
+        if (!wakeLockRef.current) {
+          wakeLockRef.current = await (navigator as any).wakeLock.request('screen')
+          console.log("🔒 Clockivo: Stopwatch acquired Screen Wake Lock!")
+        }
+      } catch (err) {
+        console.warn("🔒 Clockivo: Stopwatch Screen Wake Lock failed:", err)
+      }
+    }
+
+    const releaseWakeLock = async () => {
+      if (wakeLockRef.current) {
+        try {
+          await wakeLockRef.current.release()
+          wakeLockRef.current = null
+          console.log("🔓 Clockivo: Stopwatch released Screen Wake Lock!")
+        } catch (err) {
+          console.warn("🔓 Clockivo: Stopwatch Screen Wake Lock release failed:", err)
+        }
+      }
+    }
+
+    if (isRunning) {
+      requestWakeLock()
+    } else {
+      releaseWakeLock()
+    }
+
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible' && isRunning) {
+        await requestWakeLock()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      releaseWakeLock()
+    }
+  }, [isRunning])
 
   useEffect(() => {
     const saved = localStorage.getItem("clockivo_stopwatch_history")
@@ -38,17 +91,15 @@ export default function Stopwatch() {
 
   useEffect(() => {
     if (isRunning) {
-      lastUpdateRef.current = Date.now() - time
+      const startTime = Date.now() - timeRef.current
       timerRef.current = setInterval(() => {
-        setTime(Date.now() - lastUpdateRef.current)
+        setTime(Date.now() - startTime)
       }, 10) // Update faster for ms precision
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current)
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current)
     }
-  }, [isRunning, time])
+  }, [isRunning])
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.floor(ms / 1000)
@@ -86,6 +137,23 @@ export default function Stopwatch() {
     const delta = time - lastLapTime
     setLaps([{ id: Date.now(), time, delta }, ...laps])
   }
+
+  // Keyboard Shortcuts for Stopwatch using useKeyboardShortcut hook
+  useKeyboardShortcut("Space", () => {
+    handleStartStop()
+  })
+
+  useKeyboardShortcut("KeyL", () => {
+    if (isRunning) {
+      handleLap()
+    }
+  })
+
+  useKeyboardShortcut("KeyR", () => {
+    if (!isRunning && time > 0) {
+      handleReset()
+    }
+  })
 
   return (
     <Card className="flex flex-col items-center p-6 sm:p-12 min-h-[60vh] border-none shadow-none bg-transparent sm:bg-card sm:border sm:shadow-sm">

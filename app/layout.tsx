@@ -3,12 +3,20 @@ import './globals.css';
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from '@/components/theme-provider';
+import PWAProvider from '@/components/pwa-provider';
+import AudioUnlocker from '@/components/audio-unlocker';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://clockivo.com'),
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/clockivo-logo.png',
+    shortcut: '/clockivo-logo.png',
+    apple: '/clockivo-logo.png',
+  },
   title: {
     default: 'Clockivo - Free Online Alarm Clock, Timer & Stopwatch Suite',
     template: '%s | Clockivo'
@@ -27,11 +35,20 @@ export const metadata: Metadata = {
     siteName: 'Clockivo',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: 'https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/Astronaut_3--working_in_202604271400-ezgif.com-optijpeg.jpg?updatedAt=1777278711822',
+        width: 1200,
+        height: 630,
+        alt: 'Clockivo timing suite preview with an adorable working astronaut logo',
+      }
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Clockivo - Free Online Alarm Clock, Timer & Stopwatch Suite',
     description: 'An elegant, browser-first, and completely secure timing suite. Set customizable alarms with synthesizer waves, countdown timers, stopwatch split sheets, and world clocks instantly with local storage storage.',
+    images: ['https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/Astronaut_3--working_in_202604271400-ezgif.com-optijpeg.jpg?updatedAt=1777278711822'],
   },
   robots: {
     index: true,
@@ -53,6 +70,8 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <body suppressHydrationWarning className="min-h-screen bg-background antialiased flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
+          <PWAProvider />
+          <AudioUnlocker />
         </ThemeProvider>
       </body>
     </html>

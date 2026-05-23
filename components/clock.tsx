@@ -7,21 +7,123 @@ import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { format } from "date-fns"
-import { Maximize, Minimize, BellRing, Settings2, Globe } from "lucide-react"
+import { Maximize, Minimize, BellRing, Settings2, Globe, Search, Star, Sun, Moon, MapPin } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { playBeep } from "@/lib/audio"
+import * as audioLib from "@/lib/audio"
+
+const playBeep = (durationMs = 500, frequency = 800, type: OscillatorType | string = "sine", volume = 0.5) => {
+  if (audioLib && typeof audioLib.playBeep === "function") {
+    audioLib.playBeep(durationMs, frequency, type, volume)
+  }
+}
 
 interface ClockProps {
   defaultMode?: "digital" | "analog"
+}
+
+// 26 Prominent world cities capturing global business, remote coordination, and travel hubs
+export const LIST_OF_25_CITIES = [
+  // Americas
+  { name: "New York", country: "United States", zone: "Americas", tz: "America/New_York" },
+  { name: "Los Angeles", country: "United States", zone: "Americas", tz: "America/Los_Angeles" },
+  { name: "Chicago", country: "United States", zone: "Americas", tz: "America/Chicago" },
+  { name: "Mexico City", country: "Mexico", zone: "Americas", tz: "America/Mexico_City" },
+  { name: "Toronto", country: "Canada", zone: "Americas", tz: "America/Toronto" },
+  { name: "São Paulo", country: "Brazil", zone: "Americas", tz: "America/Sao_Paulo" },
+  { name: "Buenos Aires", country: "Argentina", zone: "Americas", tz: "America/Argentina/Buenos_Aires" },
+
+  // Europe & Middle East
+  { name: "London", country: "United Kingdom", zone: "Europe", tz: "Europe/London" },
+  { name: "Paris", country: "France", zone: "Europe", tz: "Europe/Paris" },
+  { name: "Berlin", country: "Germany", zone: "Europe", tz: "Europe/Berlin" },
+  { name: "Rome", country: "Italy", zone: "Europe", tz: "Europe/Rome" },
+  { name: "Moscow", country: "Russia", zone: "Europe", tz: "Europe/Moscow" },
+  { name: "Istanbul", country: "Turkey", zone: "Europe", tz: "Europe/Istanbul" },
+  { name: "Dubai", country: "United Arab Emirates", zone: "Middle East", tz: "Asia/Dubai" },
+  { name: "Riyadh", country: "Saudi Arabia", zone: "Middle East", tz: "Asia/Riyadh" },
+
+  // Asia & Oceania
+  { name: "Tokyo", country: "Japan", zone: "Asia & Pacific", tz: "Asia/Tokyo" },
+  { name: "Mumbai", country: "India", zone: "Asia & Pacific", tz: "Asia/Kolkata" },
+  { name: "Singapore", country: "Singapore", zone: "Asia & Pacific", tz: "Asia/Singapore" },
+  { name: "Shanghai", country: "China", zone: "Asia & Pacific", tz: "Asia/Shanghai" },
+  { name: "Hong Kong", country: "Hong Kong", zone: "Asia & Pacific", tz: "Asia/Hong_Kong" },
+  { name: "Sydney", country: "Australia", zone: "Asia & Pacific", tz: "Australia/Sydney" },
+  { name: "Seoul", country: "South Korea", zone: "Asia & Pacific", tz: "Asia/Seoul" },
+  { name: "Bangkok", country: "Thailand", zone: "Asia & Pacific", tz: "Asia/Bangkok" },
+  { name: "Auckland", country: "New Zealand", zone: "Asia & Pacific", tz: "Pacific/Auckland" },
+
+  // Africa
+  { name: "Cairo", country: "Egypt", zone: "Africa", tz: "Africa/Cairo" },
+  { name: "Johannesburg", country: "South Africa", zone: "Africa", tz: "Africa/Johannesburg" },
+]
+
+// Accurate TZ calculation helper supporting DST recursively
+export const getRelativeOffset = (tz: string, time: Date) => {
+  try {
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: false,
+    })
+    
+    const formatted = formatter.formatToParts(time)
+    const partsMap = Object.fromEntries(formatted.map(p => [p.type, p.value]))
+    
+    const year = parseInt(partsMap.year)
+    const month = parseInt(partsMap.month) - 1
+    const day = parseInt(partsMap.day)
+    const hour = parseInt(partsMap.hour)
+    const minute = parseInt(partsMap.minute)
+    const second = parseInt(partsMap.second)
+    
+    const tzTime = new Date(Date.UTC(year, month, day, hour, minute, second))
+    const tzUtcTime = new Date(Date.UTC(time.getUTCFullYear(), time.getUTCMonth(), time.getUTCDate(), time.getUTCHours(), time.getUTCMinutes(), time.getUTCSeconds()))
+    
+    const diffMs = tzTime.getTime() - tzUtcTime.getTime()
+    const diffHrs = diffMs / 3600000
+    
+    const sign = diffHrs >= 0 ? "+" : "-"
+    const absHrs = Math.floor(Math.abs(diffHrs))
+    const absMins = Math.round((Math.abs(diffHrs) - absHrs) * 60)
+    
+    const formattedOffset = `UTC${sign}${absHrs.toString().padStart(2, "0")}:${absMins.toString().padStart(2, "0")}`
+    return { formattedOffset, diffHrs }
+  } catch (e) {
+    return { formattedOffset: "UTC+00:00", diffHrs: 0 }
+  }
+}
+
+// Visual hour retriever to handle local Day/Night glow
+export const getHourInTimezone = (tz: string, date: Date) => {
+  try {
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      hour: "numeric",
+      hour12: false,
+    })
+    return parseInt(formatter.format(date))
+  } catch (e) {
+    return 12
+  }
 }
 
 export default function Clock({ defaultMode }: ClockProps) {
   const [time, setTime] = useState<Date | null>(null)
   const clockRef = useRef<HTMLDivElement>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  
   const [alarms, setAlarms] = useState<any[]>([])
   
+  // Interactive World Clock filters/pins
+  const [pinnedCities, setPinnedCities] = useState<string[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedRegion, setSelectedRegion] = useState("All")
+
   // Settings
   const [hourlyChime, setHourlyChime] = useState(false)
   const [clockMode, setClockMode] = useState<"digital" | "analog">(defaultMode || "digital")
@@ -41,6 +143,24 @@ export default function Clock({ defaultMode }: ClockProps) {
     return () => window.removeEventListener("alarmsChanged", loadAlarms)
   }, [])
 
+  // Load / Sync pinned cities safely on client
+  useEffect(() => {
+    setTimeout(() => {
+      try {
+        const savedPins = localStorage.getItem("clockivo_pinned_cities")
+        if (savedPins) {
+          setPinnedCities(JSON.parse(savedPins))
+        } else {
+          const defaults = ["New York", "London", "Tokyo", "Mumbai", "Paris"]
+          setPinnedCities(defaults)
+          localStorage.setItem("clockivo_pinned_cities", JSON.stringify(defaults))
+        }
+      } catch (e) {
+        setPinnedCities(["New York", "London", "Tokyo", "Mumbai", "Paris"])
+      }
+    }, 0)
+  }, [])
+
   useEffect(() => {
     setTimeout(() => setTime(new Date()), 0)
     const interval = setInterval(() => {
@@ -51,7 +171,6 @@ export default function Clock({ defaultMode }: ClockProps) {
         playBeep(500, 800)
         setTimeout(() => playBeep(500, 800), 1000)
       }
-
     }, 1000)
     return () => clearInterval(interval)
   }, [hourlyChime])
@@ -64,11 +183,24 @@ export default function Clock({ defaultMode }: ClockProps) {
     return () => document.removeEventListener('fullscreenchange', onFullscreenChange)
   }, [])
 
+  const togglePin = (cityName: string) => {
+    try {
+      let updated: string[] = []
+      if (pinnedCities.includes(cityName)) {
+        updated = pinnedCities.filter(name => name !== cityName)
+      } else {
+        updated = [...pinnedCities, cityName]
+      }
+      setPinnedCities(updated)
+      localStorage.setItem("clockivo_pinned_cities", JSON.stringify(updated))
+    } catch (e) {}
+  }
+
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       if (clockRef.current) {
         clockRef.current.requestFullscreen().catch(err => {
-          console.error("Error attempting to enable fullscreen:", err)
+          console.error("Error enabling fullscreen:", err)
         })
       }
     } else {
@@ -81,8 +213,8 @@ export default function Clock({ defaultMode }: ClockProps) {
     const activeAlarms = alarms.filter(a => a.enabled)
     if (activeAlarms.length === 0) return null
 
-    let nearest: any = null;
-    let minDiff = Infinity;
+    let nearest: any = null
+    let minDiff = Infinity
     
     activeAlarms.forEach(a => {
         const h = parseInt(a.hours)
@@ -128,6 +260,22 @@ export default function Clock({ defaultMode }: ClockProps) {
   const colorClass = nightColor === "red" ? "text-red-500" : nightColor === "amber" ? "text-amber-500" : nightColor === "green" ? "text-green-500" : "text-foreground"
   const isNightColored = nightColor !== "default"
 
+  // Live filter/search computations
+  const filteredCities = useMemo(() => {
+    return LIST_OF_25_CITIES.filter(city => {
+      const matchRegion = selectedRegion === "All" || city.zone === selectedRegion
+      const matchSearch = searchQuery.trim() === "" ||
+        city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        city.country.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchRegion && matchSearch
+    })
+  }, [searchQuery, selectedRegion])
+
+  // Split into pinned list items
+  const pinnedList = useMemo(() => {
+    return LIST_OF_25_CITIES.filter(city => pinnedCities.includes(city.name))
+  }, [pinnedCities])
+
   if (!time) return null
 
   let dateText = ""
@@ -135,13 +283,16 @@ export default function Clock({ defaultMode }: ClockProps) {
   else if (dateFormat === "dd/mm/yyyy") dateText = format(time, "dd/MM/yyyy")
   else if (dateFormat === "mm/dd/yyyy") dateText = format(time, "MM/dd/yyyy")
 
-
-
-  const cities = [
-    { name: "New York", tz: "America/New_York" },
-    { name: "London", tz: "Europe/London" },
-    { name: "Tokyo", tz: "Asia/Tokyo" },
-  ]
+  // Relative hour helper comparing clock timezone with standard user system time
+  const getRelativeHrsLabel = (targetOffsetHrs: number) => {
+    const systemOffsetMins = time.getTimezoneOffset()
+    const systemOffsetHrs = -systemOffsetMins / 60
+    const diffHrs = targetOffsetHrs - systemOffsetHrs
+    if (diffHrs === 0) return "same time"
+    const sign = diffHrs > 0 ? "+" : ""
+    const formattedDiff = Number(diffHrs.toFixed(1)).toString()
+    return `${sign}${formattedDiff}h`
+  }
 
   return (
     <Card ref={clockRef} className={`relative flex flex-col items-center justify-center p-6 sm:p-12 min-h-[60vh] border-none shadow-none bg-transparent sm:bg-card sm:border sm:shadow-sm ${isFullscreen ? (isNightColored ? '!bg-black h-screen w-screen rounded-none' : 'bg-background h-screen w-screen sm:bg-background sm:rounded-none') : ''}`}>
@@ -156,43 +307,43 @@ export default function Clock({ defaultMode }: ClockProps) {
                  <button className={`w-6 h-6 rounded-full border border-border/50 bg-green-500 transition-transform ${nightColor==='green'?'scale-125 border-primary':''}`} onClick={()=>setNightColor("green")}></button>
              </div>
          ) : (
-            <Dialog>
-            <DialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                <Settings2 className="w-5 h-5"/>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-xs border-none sm:border shadow-2xl">
-                <DialogHeader>
-                <DialogTitle>Clock Settings</DialogTitle>
-                </DialogHeader>
-                <div className="flex flex-col gap-6 py-4">
-                    <div className="flex items-center justify-between">
-                        <Label>Clock Mode</Label>
-                        <Select value={clockMode} onValueChange={(v:any)=>setClockMode(v)}>
-                            <SelectTrigger className="w-32"><SelectValue/></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="digital">Digital</SelectItem>
-                                <SelectItem value="analog">Analog</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <Label>Date Format</Label>
-                        <Select value={dateFormat} onValueChange={(v:any)=>setDateFormat(v)}>
-                            <SelectTrigger className="w-32"><SelectValue/></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="full">Full Readable</SelectItem>
-                                <SelectItem value="dd/mm/yyyy">DD/MM/YYYY</SelectItem>
-                                <SelectItem value="mm/dd/yyyy">MM/DD/YYYY</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <Label>Hourly Chime</Label>
-                        <Switch checked={hourlyChime} onCheckedChange={setHourlyChime}/>
-                    </div>
-                </div>
-            </DialogContent>
-            </Dialog>
+             <Dialog>
+             <DialogTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
+                 <Settings2 className="w-5 h-5"/>
+             </DialogTrigger>
+             <DialogContent className="sm:max-w-xs border-none sm:border shadow-2xl bg-card">
+                 <DialogHeader>
+                 <DialogTitle>Clock Settings</DialogTitle>
+                 </DialogHeader>
+                 <div className="flex flex-col gap-6 py-4">
+                     <div className="flex items-center justify-between">
+                         <Label>Clock Mode</Label>
+                         <Select value={clockMode} onValueChange={(v:any)=>setClockMode(v)}>
+                             <SelectTrigger className="w-32"><SelectValue/></SelectTrigger>
+                             <SelectContent>
+                                 <SelectItem value="digital">Digital</SelectItem>
+                                 <SelectItem value="analog">Analog</SelectItem>
+                             </SelectContent>
+                         </Select>
+                     </div>
+                     <div className="flex items-center justify-between">
+                         <Label>Date Format</Label>
+                         <Select value={dateFormat} onValueChange={(v:any)=>setDateFormat(v)}>
+                             <SelectTrigger className="w-32"><SelectValue/></SelectTrigger>
+                             <SelectContent>
+                                 <SelectItem value="full">Full Readable</SelectItem>
+                                 <SelectItem value="dd/mm/yyyy">DD/MM/YYYY</SelectItem>
+                                 <SelectItem value="mm/dd/yyyy">MM/DD/YYYY</SelectItem>
+                             </SelectContent>
+                         </Select>
+                     </div>
+                     <div className="flex items-center justify-between">
+                         <Label>Hourly Chime</Label>
+                         <Switch checked={hourlyChime} onCheckedChange={setHourlyChime}/>
+                     </div>
+                 </div>
+             </DialogContent>
+             </Dialog>
          )}
 
          <Button variant="ghost" size="icon" onClick={toggleFullscreen}>
@@ -216,8 +367,9 @@ export default function Clock({ defaultMode }: ClockProps) {
       </div>
       
       {!isFullscreen && (
-          <div className="mt-12 w-full flex flex-col gap-6">
-              <div className="flex items-center justify-between p-4 rounded-xl border bg-muted/20 w-full hover:bg-muted/30 transition-colors cursor-default">
+          <div className="mt-12 w-full flex flex-col gap-8">
+              {/* Next Alarm Module */}
+              <div className="flex items-center justify-between p-4 rounded-2xl border bg-muted/20 w-full hover:bg-muted/30 transition-colors cursor-default">
                   <div className="flex items-center gap-3">
                       <div className="p-2 rounded-full bg-primary/10 text-primary">
                           <BellRing className="w-5 h-5" />
@@ -239,32 +391,191 @@ export default function Clock({ defaultMode }: ClockProps) {
                   )}
               </div>
 
-              <div className="flex flex-col mt-4">
-                  <div className="flex items-center gap-2 mb-3 px-1 text-muted-foreground">
-                      <Globe className="w-4 h-4" />
-                      <span className="text-xs font-bold uppercase tracking-wider">World Time</span>
+              {/* Ultimate World Clocks Dashboard Panel */}
+              <div className="flex flex-col border-t border-border/35 pt-8">
+                  
+                  {/* Header & Main Info */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                      <div className="flex items-center gap-2 text-foreground">
+                          <Globe className="w-5 h-5 text-primary animate-pulse" />
+                          <div>
+                              <h2 className="text-lg font-bold tracking-tight">World Clock Dashboard</h2>
+                              <p className="text-xs text-muted-foreground font-medium">Real-time coordinates and Daylight Saving Time (DST) offsets</p>
+                          </div>
+                      </div>
+
+                      {/* Live search input */}
+                      <div className="relative w-full sm:w-64">
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <input
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              placeholder="Search over 25 world cities..."
+                              className="w-full bg-muted/40 text-sm pl-9 pr-3 py-2 border border-border/40 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all text-foreground"
+                          />
+                      </div>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      {cities.map(city => {
-                          let strTime = "";
-                          let strDate = "";
-                          try {
-                            const dfTime = new Intl.DateTimeFormat('en-US', { timeZone: city.tz, hour: '2-digit', minute: '2-digit', hour12: false });
-                            const dfDate = new Intl.DateTimeFormat('en-US', { timeZone: city.tz, month: 'short', day: 'numeric' });
-                            strTime = dfTime.format(time);
-                            strDate = dfDate.format(time);
-                          } catch (e) {
-                            strTime = "--:--"; 
-                            strDate = "---";
-                          }
-                          return (
-                              <div key={city.name} className="flex flex-col p-4 rounded-xl border border-border/50 bg-card hover:bg-accent/50 transition-colors shadow-sm">
-                                  <span className="text-sm font-medium text-muted-foreground">{city.name}</span>
-                                  <span className="text-3xl font-mono font-bold tracking-tighter mt-1">{strTime}</span>
-                                  <span className="text-xs text-muted-foreground mt-1 font-medium">{strDate}</span>
-                              </div>
-                          )
-                      })}
+
+                  {/* Region Filter Buttons */}
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                      {["All", "Americas", "Europe", "Middle East", "Asia & Pacific", "Africa"].map(region => (
+                          <button
+                              key={region}
+                              onClick={() => setSelectedRegion(region)}
+                              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                                  selectedRegion === region
+                                      ? "bg-primary text-primary-foreground shadow-xs"
+                                      : "bg-muted/30 text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                              }`}
+                          >
+                              {region}
+                          </button>
+                      ))}
+                  </div>
+
+                  {/* 1. Pinned Cities (Favorites) Section */}
+                  {pinnedList.length > 0 && (
+                      <div className="mb-6 flex flex-col">
+                          <div className="flex items-center gap-1.5 mb-3 px-1 text-primary">
+                              <Star className="w-4 h-4 fill-primary" />
+                              <span className="text-xs font-bold uppercase tracking-wider">Pinned Favorites ({pinnedList.length})</span>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                              {pinnedList.map(city => {
+                                  let strTime = ""
+                                  let strDate = ""
+                                  let offsetInfo = { formattedOffset: "", diffHrs: 0 }
+                                  const localHour = getHourInTimezone(city.tz, time)
+                                  const isDaytime = localHour >= 6 && localHour < 18
+
+                                  try {
+                                      const dfTime = new Intl.DateTimeFormat('en-US', { timeZone: city.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+                                      const dfDate = new Intl.DateTimeFormat('en-US', { timeZone: city.tz, month: 'short', day: 'numeric' })
+                                      strTime = dfTime.format(time)
+                                      strDate = dfDate.format(time)
+                                      offsetInfo = getRelativeOffset(city.tz, time)
+                                  } catch (e) {
+                                      strTime = "--:--"
+                                      strDate = "---"
+                                  }
+
+                                  return (
+                                      <div key={`pin-${city.name}`} className="flex flex-col p-4 rounded-2xl border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all shadow-xs relative group">
+                                          <button 
+                                              onClick={() => togglePin(city.name)}
+                                              className="absolute top-3 right-3 text-primary opacity-80 hover:opacity-100 transition-opacity"
+                                              title="Unpin this city"
+                                          >
+                                              <Star className="w-4 h-4 fill-primary" />
+                                          </button>
+
+                                          <div className="flex items-center gap-1">
+                                              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/95">{city.name}</span>
+                                              <span className="text-[10px] text-muted-foreground/60">({city.country})</span>
+                                          </div>
+
+                                          <div className="flex items-baseline mt-1 gap-2">
+                                              <span className="text-3xl font-mono font-bold tracking-tight tabular-nums">{strTime}</span>
+                                              <span className="text-xs font-bold shrink-0 flex items-center gap-1">
+                                                  {isDaytime ? (
+                                                      <Sun className="w-3.5 h-3.5 text-amber-500 fill-amber-500/20" />
+                                                  ) : (
+                                                      <Moon className="w-3.5 h-3.5 text-indigo-400 fill-indigo-400/20" />
+                                                  )}
+                                              </span>
+                                          </div>
+
+                                          <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-primary/10 text-[11px] text-muted-foreground font-mono">
+                                              <span>{strDate}</span>
+                                              <span className="flex items-center gap-1">
+                                                  <span>{offsetInfo.formattedOffset}</span>
+                                                  <span className="font-semibold text-primary bg-primary/10 rounded-sm px-1 shrink-0 text-[10px]">
+                                                      {getRelativeHrsLabel(offsetInfo.diffHrs)}
+                                                  </span>
+                                              </span>
+                                          </div>
+                                      </div>
+                                  )
+                              })}
+                          </div>
+                      </div>
+                  )}
+
+                  {/* 2. Main Selected Grid */}
+                  <div className="flex flex-col mt-2">
+                      <div className="flex items-center gap-1.5 mb-3 px-1 text-muted-foreground">
+                          <MapPin className="w-4 h-4" />
+                          <span className="text-xs font-bold uppercase tracking-wider">
+                              {selectedRegion} World Clocks ({filteredCities.length})
+                          </span>
+                      </div>
+
+                      {filteredCities.length === 0 ? (
+                          <div className="text-center py-10 rounded-2xl border border-dashed border-border/40 text-muted-foreground text-sm">
+                              No world cities matched your search query. Try another keyword.
+                          </div>
+                      ) : (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                              {filteredCities.map(city => {
+                                  const isPinned = pinnedCities.includes(city.name)
+                                  let strTime = ""
+                                  let strDate = ""
+                                  let offsetInfo = { formattedOffset: "", diffHrs: 0 }
+                                  const localHour = getHourInTimezone(city.tz, time)
+                                  const isDaytime = localHour >= 6 && localHour < 18
+
+                                  try {
+                                      const dfTime = new Intl.DateTimeFormat('en-US', { timeZone: city.tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+                                      const dfDate = new Intl.DateTimeFormat('en-US', { timeZone: city.tz, month: 'short', day: 'numeric' })
+                                      strTime = dfTime.format(time)
+                                      strDate = dfDate.format(time)
+                                      offsetInfo = getRelativeOffset(city.tz, time)
+                                  } catch (e) {
+                                      strTime = "--:--"
+                                      strDate = "---"
+                                  }
+
+                                  return (
+                                      <div key={city.name} className="flex flex-col p-4 rounded-2xl border border-border/30 bg-card hover:bg-muted/10 transition-all shadow-xs relative group">
+                                          <button 
+                                              onClick={() => togglePin(city.name)}
+                                              className="absolute top-3 right-3 text-muted-foreground opacity-30 hover:opacity-100 group-hover:opacity-100 transition-all"
+                                              title={isPinned ? "Unpin this city" : "Pin this city to standard list"}
+                                          >
+                                              <Star className={`w-4 h-4 ${isPinned ? "fill-primary text-primary" : "text-muted-foreground"}`} />
+                                          </button>
+
+                                          <div className="flex items-center gap-1">
+                                              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/95">{city.name}</span>
+                                              <span className="text-[10px] text-muted-foreground/60">({city.country})</span>
+                                          </div>
+
+                                          <div className="flex items-baseline mt-1 gap-2">
+                                              <span className="text-3xl font-mono font-bold tracking-tight tabular-nums">{strTime}</span>
+                                              <span className="text-xs font-bold shrink-0 flex items-center gap-1">
+                                                  {isDaytime ? (
+                                                      <Sun className="w-3.5 h-3.5 text-amber-500 fill-amber-500/10" />
+                                                  ) : (
+                                                      <Moon className="w-3.5 h-3.5 text-indigo-400 fill-indigo-400/10" />
+                                                  )}
+                                              </span>
+                                          </div>
+
+                                          <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-border/20 text-[11px] text-muted-foreground font-mono">
+                                              <span>{strDate}</span>
+                                              <span className="flex items-center gap-1">
+                                                  <span>{offsetInfo.formattedOffset}</span>
+                                                  <span className="font-semibold text-primary bg-primary/10 rounded-sm px-1 shrink-0 text-[10px]">
+                                                      {getRelativeHrsLabel(offsetInfo.diffHrs)}
+                                                  </span>
+                                              </span>
+                                          </div>
+                                      </div>
+                                  )
+                              })}
+                          </div>
+                      )}
                   </div>
               </div>
           </div>
@@ -274,13 +585,13 @@ export default function Clock({ defaultMode }: ClockProps) {
 }
 
 function AnalogClock({ time, colorClass }: { time: Date; colorClass: string }) {
-  const s = time.getSeconds();
-  const m = time.getMinutes();
-  const h = time.getHours();
+  const s = time.getSeconds()
+  const m = time.getMinutes()
+  const h = time.getHours()
   
-  const sRotation = s * 6;
-  const mRotation = m * 6 + s * 0.1;
-  const hRotation = (h % 12) * 30 + m * 0.5;
+  const sRotation = s * 6
+  const mRotation = m * 6 + s * 0.1
+  const hRotation = (h % 12) * 30 + m * 0.5
 
   return (
     <svg viewBox="0 0 100 100" className={`w-64 h-64 sm:w-[500px] sm:h-[500px] ${colorClass} transition-transform`}>

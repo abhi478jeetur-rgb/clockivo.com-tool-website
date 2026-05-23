@@ -8,10 +8,26 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Trash2, BellRing, Volume2, Moon, Copy, Pencil } from "lucide-react"
+import { Plus, Trash2, BellRing, Volume2, Moon, Copy, Pencil, Music, Youtube } from "lucide-react"
 import { format } from "date-fns"
-import { playAlarmSound } from "@/lib/audio"
+import * as audioLib from "@/lib/audio"
+
+const playAlarmSound = () => {
+  if (audioLib && typeof audioLib.playAlarmSound === "function") {
+    audioLib.playAlarmSound()
+  }
+}
+
+const getSoundSettings = () => {
+  if (audioLib && typeof audioLib.getSoundSettings === "function") {
+    return audioLib.getSoundSettings()
+  }
+  return { volume: 50, type: "sine", speed: "normal" }
+}
 import { SoundSettings } from "./sound-settings"
+import dynamic from "next/dynamic"
+
+const CustomMediaHub = dynamic(() => import("./custom-media-hub"), { ssr: false })
 
 interface AlarmData {
   id: string
@@ -45,8 +61,12 @@ export default function Alarm() {
   // Ringing State
   const [ringingAlarmId, setRingingAlarmId] = useState<string | null>(null)
   
-  // Sound interval ref
+  // Sound interval and audio elements refs
   const soundInterval = useRef<NodeJS.Timeout | null>(null)
+  const ringingAudioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Checked minutes track to avoid skipping alarms during background sleeps/throttles
+  const lastCheckedMinRef = useRef<number>(0)
 
   // Load from local storage
   useEffect(() => {
@@ -71,6 +91,30 @@ export default function Alarm() {
 
   const triggerAlarm = (id: string) => {
     setRingingAlarmId(id)
+
+    const settings = getSoundSettings()
+    
+    if (settings.type === "custom") {
+      try {
+        const customUrl = localStorage.getItem("clockivo_uploaded_url")
+        if (customUrl) {
+          const audio = new Audio(customUrl)
+          audio.loop = true
+          audio.volume = (settings.volume ?? 50) / 100
+          audio.play().catch(e => console.warn("Browser blocked auto-play inside custom track:", e))
+          ringingAudioRef.current = audio
+          return
+        }
+      } catch (e) {
+        console.warn("Could not play custom audio:", e)
+      }
+    }
+
+    if (settings.type === "youtube") {
+      // YouTube streams directly via our Iframe renderer inside the Modal overlay
+      return
+    }
+    
     playAlarmSound()
     soundInterval.current = setInterval(() => {
         playAlarmSound()
@@ -79,38 +123,63 @@ export default function Alarm() {
 
   // Current time & alarm checker
   useEffect(() => {
-    setTimeout(() => setCurrentTime(new Date()), 0)
+    setTimeout(() => {
+      const now = new Date()
+      setCurrentTime(now)
+      
+      // Initialize checked minute immediately so we do not double-trigger old alarms on load
+      const initMinObj = new Date(now)
+      initMinObj.setSeconds(0, 0)
+      lastCheckedMinRef.current = initMinObj.getTime()
+    }, 0)
     
     const interval = setInterval(() => {
       const now = new Date()
       setCurrentTime(now)
       
-      const currentH = format(now, "HH")
-      const currentM = format(now, "mm")
-      const currentS = format(now, "ss")
+      // Get hour-minute timestamp floored to minute
+      const currentMinObj = new Date(now)
+      currentMinObj.setSeconds(0, 0)
+      const currentMinTS = currentMinObj.getTime()
+      const lastCheckTS = lastCheckedMinRef.current
 
-      // Only check at the beginning of the minute
-      if (currentS === "00") {
-        alarms.forEach(alarm => {
-            let shouldRing = alarm.enabled && alarm.hours === currentH && alarm.minutes === currentM;
+      if (lastCheckTS > 0 && currentMinTS > lastCheckTS) {
+        // Find how many minutes of differences we have since we last checked
+        const diffMin = Math.round((currentMinTS - lastCheckTS) / 60000)
+        
+        // Limit lookback sweep to max 15 minutes to prevent huge alarm spam
+        const minutesToCheck = Math.min(diffMin, 15)
+        
+        for (let i = minutesToCheck; i >= 1; i--) {
+          const checkTime = new Date(currentMinTS - (i - 1) * 60000)
+          const checkH = format(checkTime, "HH")
+          const checkM = format(checkTime, "mm")
+          
+          alarms.forEach(alarm => {
+            let shouldRing = alarm.enabled && alarm.hours === checkH && alarm.minutes === checkM
             if (shouldRing) {
-                const rec = alarm.recurrence || "once";
-                const dayOfWeek = now.getDay();
-                const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-                if (rec === "weekdays" && isWeekend) shouldRing = false;
-                if (rec === "weekends" && !isWeekend) shouldRing = false;
+              const rec = alarm.recurrence || "once"
+              const dayOfWeek = checkTime.getDay()
+              const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
+              if (rec === "weekdays" && isWeekend) shouldRing = false
+              if (rec === "weekends" && !isWeekend) shouldRing = false
 
-                if (rec === "once" && alarm.targetDate) {
-                    const todayStr = format(now, "yyyy-MM-dd")
-                    if (alarm.targetDate !== todayStr) {
-                        shouldRing = false;
-                    }
+              if (rec === "once" && alarm.targetDate) {
+                const checkDateStr = format(checkTime, "yyyy-MM-dd")
+                if (alarm.targetDate !== checkDateStr) {
+                  shouldRing = false
                 }
+              }
             }
             if (shouldRing) {
-                triggerAlarm(alarm.id)
+              triggerAlarm(alarm.id)
             }
-        })
+          })
+        }
+        
+        lastCheckedMinRef.current = currentMinTS
+      } else if (lastCheckTS === 0) {
+        lastCheckedMinRef.current = currentMinTS
       }
 
     }, 1000)
@@ -119,7 +188,14 @@ export default function Alarm() {
   }, [alarms])
 
   const stopAlarm = () => {
-    if (soundInterval.current) clearInterval(soundInterval.current)
+    if (soundInterval.current) {
+      clearInterval(soundInterval.current)
+      soundInterval.current = null
+    }
+    if (ringingAudioRef.current) {
+      ringingAudioRef.current.pause()
+      ringingAudioRef.current = null
+    }
     
     setAlarms(current => current.map(a => 
       a.id === ringingAlarmId ? { ...a, enabled: false } : a
@@ -129,7 +205,14 @@ export default function Alarm() {
   }
 
   const snoozeAlarm = () => {
-    if (soundInterval.current) clearInterval(soundInterval.current)
+    if (soundInterval.current) {
+      clearInterval(soundInterval.current)
+      soundInterval.current = null
+    }
+    if (ringingAudioRef.current) {
+      ringingAudioRef.current.pause()
+      ringingAudioRef.current = null
+    }
     
     // Create a new snooze time (+5 mins)
     const now = new Date()
@@ -341,6 +424,9 @@ export default function Alarm() {
         </Button>
       )}
 
+      {/* Dynamic Custom Audio, Visualizer & YouTube Hub */}
+      <CustomMediaHub />
+
       {/* Add Alarm Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md border-none sm:border shadow-2xl">
@@ -423,22 +509,70 @@ export default function Alarm() {
 
       {/* Ringing Modal overlays everything */}
       <Dialog open={ringingAlarmId !== null} onOpenChange={() => {}}>
-        <DialogContent className="sm:max-w-sm rounded-[2rem] p-10 flex flex-col items-center gap-6 justify-center bg-card 
+        <DialogContent className="sm:max-w-md rounded-[2rem] p-8 flex flex-col items-center gap-6 justify-center bg-card 
           ring-8 ring-primary/20 animate-in zoom-in duration-300">
-          <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center animate-pulse relative">
-             <BellRing className="w-12 h-12 text-primary animate-bounce" />
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center animate-pulse relative">
+             <BellRing className="w-10 h-10 text-primary animate-bounce" />
           </div>
-          <div className="flex flex-col items-center gap-2 text-center">
+          <div className="flex flex-col items-center gap-2 text-center w-full">
              <h2 className="text-5xl font-mono font-bold tabular-nums">
                {ringingAlarm?.hours}:{ringingAlarm?.minutes}
              </h2>
-             <p className="text-2xl font-medium text-muted-foreground">{ringingAlarm?.label}</p>
+             <p className="text-xl font-medium text-muted-foreground">{ringingAlarm?.label}</p>
+             {ringingAlarm?.note && (
+               <p className="text-xs text-muted-foreground bg-muted/65 px-3 py-1.5 rounded-lg border border-border/30 max-w-xs">{ringingAlarm.note}</p>
+             )}
           </div>
-          <div className="flex flex-col w-full gap-3 mt-4">
-             <Button size="lg" onClick={stopAlarm} className="w-full rounded-full h-16 text-xl shadow-lg animate-pulse">
+
+          {/* YouTube loop streamer inside alert screen (Visual-free background notifier) */}
+          {ringingAlarmId !== null && getSoundSettings().type === "youtube" && (
+            <div className="w-full flex flex-col items-center gap-1.5 bg-red-500/5 border border-red-500/20 p-4 rounded-xl animate-pulse">
+               <div className="flex items-center gap-1.5 text-red-500">
+                 <Youtube className="w-5 h-5 animate-bounce" />
+                 <span className="text-xs font-bold font-mono">YouTube Alarm Sounding...</span>
+               </div>
+               <span className="text-[10px] font-mono text-muted-foreground truncate max-w-[220px]">
+                 Streaming High-Fidelity Audio
+               </span>
+               
+               {/* Invisible background stream engine element keeping sound active */}
+               <iframe
+                 src={`https://www.youtube.com/embed/${localStorage.getItem("clockivo_youtube_id") || "5qap5aO4i9A"}?autoplay=1&loop=1&playlist=${localStorage.getItem("clockivo_youtube_id") || "5qap5aO4i9A"}`}
+                 title="YouTube Alarm Ringing Tone"
+                 style={{
+                   position: "absolute",
+                   width: "1px",
+                   height: "1px",
+                   opacity: 0,
+                   pointerEvents: "none",
+                   top: "-1000px",
+                   left: "-1000px",
+                   border: "none",
+                 }}
+                 allow="autoplay"
+                 frameBorder="0"
+               />
+            </div>
+          )}
+
+          {/* Custom Local audio stream state visual inside alert screen */}
+          {ringingAlarmId !== null && getSoundSettings().type === "custom" && (
+            <div className="w-full flex flex-col items-center gap-1.5 bg-primary/5 border border-primary/20 p-4 rounded-xl animate-pulse">
+               <div className="flex items-center gap-1.5 text-primary">
+                 <Music className="w-4 h-4 animate-bounce" />
+                 <span className="text-xs font-bold font-mono">Custom Upload Sounding</span>
+               </div>
+               <span className="text-[10px] font-mono text-muted-foreground truncate max-w-[220px]">
+                 {localStorage.getItem("clockivo_uploaded_name") || "Custom Alarm Tone"}
+               </span>
+            </div>
+          )}
+
+          <div className="flex flex-col w-full gap-3 mt-2">
+             <Button size="lg" onClick={stopAlarm} className="w-full rounded-full h-15 text-xl shadow-lg animate-pulse">
                STOP
              </Button>
-             <Button size="lg" variant="secondary" onClick={snoozeAlarm} className="w-full rounded-full h-14 text-lg">
+             <Button size="lg" variant="secondary" onClick={snoozeAlarm} className="w-full rounded-full h-13 text-lg">
                <Moon className="w-5 h-5 mr-2" /> Snooze 5 Min
              </Button>
           </div>
