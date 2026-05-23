@@ -1,0 +1,39 @@
+# Clockivo - Secure Browser-First Utilities
+
+Clockivo is an elegant, lightweight, and completely private timing suite built specifically for modern productivity. Operating entirely in the client browser, it preserves battery life and enforces total data confidentiality by processing all calculations, stopwatch laps, and timer sessions locally with absolutely zero backend network transmissions.
+
+We engineered Clockivo to eliminate the heavyweight asset loads of legacy web clock sites, using synthetically compiled audio waves through the native HTML Web Audio API rather than bloated external sound files.
+
+---
+
+## Core Tools and Canonical Paths
+
+- **Corporate Suite Homepage**: [https://clockivo.com](https://clockivo.com)
+  Unified console giving instantaneous access to alarms, countdown timers, laps, and timezone displays. High-contrast interfaces ideal for both focus rooms and desktop dashboard displays.
+  
+- **Multi-Alarm Utility**: [https://clockivo.com/alarm-clock](https://clockivo.com/alarm-clock)
+  Setup concurrent active alarms with precise hour-and-minute triggers. Offers individual sound selector presets (Sine, Square, Triangle, or Sawtooth synth waves), visual chime warnings, volume safety sliders, and recurring day patterns (Daily, Weekdays, Weekends).
+  
+- **Precision Countdown Timer**: [https://clockivo.com/timer](https://clockivo.com/timer)
+  Run specific hours, minutes, and seconds triggers. Features study presets, real-time timer preservation (resumes even after closing or refreshing the browser tab), loud acoustic alarms, and a persistence log for tracking multiple completed workouts/sessions.
+  
+- **Split-Lap Stopwatch**: [https://clockivo.com/stopwatch](https://clockivo.com/stopwatch)
+  Chronometer with millisecond hardware accuracy utilizing frame-scheduled requestAnimationFrame loops. Logs complete lap lists, speed comparisons, and allows instant export/recovery of previously recorded sessions.
+  
+- **Monospace Digital Clock**: [https://clockivo.com/digital-clock](https://clockivo.com/digital-clock)
+  Minimalist fullscreen timing interface displaying seconds, hours, and formatted dates. Supports adaptive night colors (Red, Amber, Green) to minimize ocular strain, and hourly chiming options.
+  
+- **Vector Sweep Analog Clock**: [https://clockivo.com/analog-clock](https://clockivo.com/analog-clock)
+  Classic SVG vector clock display rendered matching traditional hand sweeps. Designed for passive, low-resource background operations.
+  
+- **Dynamic World Clock**: [https://clockivo.com/world-clock](https://clockivo.com/world-clock)
+  Track real-time timezone offsets globally. Features daylight saving adjustments built on high-precision native internationalization (Intl) APIs.
+
+---
+
+## Architecture and Technical Foundations
+
+1. **Client-Authoritative Model**: User timetables, presets, database history, and audio volume calibrations are stored inside the browser's local sandbox Index database (`localStorage`). No tracking trackers, no cookies, no databases, rendering the application completely private.
+2. **Web Audio Oscillator Engines**: Audio chimes are generated programmatically on-demand using browser hardware resources (OscillatorNodes with varying mathematical frequencies and sustain envelope curves).
+3. **Optimized Thread Performance**: Coordinates, sweep rotations, and stopwatch splits undergo coordinate translations matching screen refresh targets to keep passive tabs operating at near-zero CPU footprint.
+4. **Google Search Standards**: Pure semantic markup, high contrast ratios complying with WCAG standards, and structural JSON-LD metadata schema.org templates embedded on every dynamic page tool for perfect Google search indexing.

@@ -1,0 +1,6 @@
+{
+  "name": "Clockivo",
+  "description": "An online alarm clock, timer, stopwatch, and world clock tool. A clone of vclock.com.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
