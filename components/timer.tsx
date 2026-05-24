@@ -22,16 +22,20 @@ interface TimerSession {
    id: string; label: string; duration: number; completedAt: string;
 }
 
-export default function Timer() {
-  const [initialTime, setInitialTime] = useState(300) // 5 minutes default
-  const [timeLeft, setTimeLeft] = useState(300)
+export default function Timer({ defaultDuration }: { defaultDuration?: number } = {}) {
+  const resolvedDuration = defaultDuration && defaultDuration > 0 ? defaultDuration : 300
+  const [initialTime, setInitialTime] = useState(resolvedDuration)
+  const [timeLeft, setTimeLeft] = useState(resolvedDuration)
   const [isRunning, setIsRunning] = useState(false)
-  
-  // Edit mode state
-  const [isEditing, setIsEditing] = useState(true)
-  const [hours, setHours] = useState("00")
-  const [minutes, setMinutes] = useState("05")
-  const [seconds, setSeconds] = useState("00")
+
+  // Edit mode state — skip editing when a duration is pre-set
+  const [isEditing, setIsEditing] = useState(!defaultDuration || defaultDuration <= 0)
+  const initH = Math.floor(resolvedDuration / 3600)
+  const initM = Math.floor((resolvedDuration % 3600) / 60)
+  const initS = resolvedDuration % 60
+  const [hours, setHours] = useState(initH.toString().padStart(2, '0'))
+  const [minutes, setMinutes] = useState(initM.toString().padStart(2, '0'))
+  const [seconds, setSeconds] = useState(initS.toString().padStart(2, '0'))
   const [history, setHistory] = useState<TimerSession[]>([])
 
   const timerRef = useRef<NodeJS.Timeout | null>(null)
