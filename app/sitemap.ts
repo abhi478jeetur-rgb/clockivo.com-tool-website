@@ -78,7 +78,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/timer-vs-stopwatch`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ]
+
+  const pSEOPagesList = [
+    '5-minutes',
+    '10-minutes',
+    '15-minutes',
+    '20-minutes',
+    '25-minutes',
+    '30-minutes',
+    '45-minutes',
+    '1-hour',
+    'pomodoro-timer',
+    'study-timer',
+    'presentation-timer',
+    'workout-timer',
+    'egg-timer'
+  ];
+
+  const pSEOSitemaps: MetadataRoute.Sitemap = pSEOPagesList.map((slug) => ({
+    url: `${baseUrl}/timer/${slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
 
   const blogIndex: MetadataRoute.Sitemap[0] = {
     url: `${baseUrl}/blog`,
@@ -94,5 +123,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  return [...staticPages, blogIndex, ...blogPosts]
+  return [...staticPages, ...pSEOSitemaps, blogIndex, ...blogPosts]
 }

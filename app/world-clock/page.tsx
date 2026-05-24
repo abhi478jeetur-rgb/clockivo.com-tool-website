@@ -3,6 +3,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import AdContainer from "@/components/ad-container"
 import Clock from "@/components/clock"
+import QuickStats from "@/components/quick-stats"
 import { Clock as ClockIcon, HelpCircle } from "lucide-react"
 import Link from "next/link"
 
@@ -110,6 +111,8 @@ export default function WorldClockPage() {
         <div className="mb-12">
           <Clock defaultMode="digital" />
         </div>
+
+        <QuickStats />
 
         <AdContainer size="leaderboard" className="mb-12" />
 

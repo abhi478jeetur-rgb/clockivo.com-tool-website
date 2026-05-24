@@ -18,6 +18,7 @@ export default function robots(): MetadataRoute.Robots {
         '/help',
         '/about',
         '/contact',
+        '/timer-vs-stopwatch',
       ],
       disallow: [
         '/api/',                 // API routes
@@ -26,6 +27,7 @@ export default function robots(): MetadataRoute.Robots {
         '/dev/',                 // Dev environments
         '/admin/',               // Admin pages
         '/fullscreen*',          // Block standalone fullscreen pages to avoid low-content index issues
+        '/embed/',               // Disallow raw widget pages to prevent duplicate/thin content indexing
       ],
     },
     sitemap: `${baseUrl}/sitemap.xml`,

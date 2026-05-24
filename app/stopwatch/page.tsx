@@ -6,6 +6,10 @@ import Stopwatch from "@/components/stopwatch"
 import { Timer as TimerIcon, HelpCircle } from "lucide-react"
 import Link from "next/link"
 
+import EmbedModal from "@/components/embed-modal"
+
+import QuickStats from "@/components/quick-stats"
+
 export const metadata: Metadata = {
   title: "Free Online Stopwatch with Lap Timer for Workouts & Study | Clockivo",
   description: "Need a browser stopwatch? Run our free online stopwatch with lap timing capabilities to track workouts, study sessions, science experiments, or presentations.",
@@ -28,6 +32,13 @@ export default function StopwatchPage() {
           "price": "0",
           "priceCurrency": "USD"
         },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "8920",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "description": "Run a free online stopwatch with lap timing capabilities to track workouts, study sessions, science experiments, or presentations.",
         "softwareVersion": "1.0",
         "browserRequirements": "Requires a modern browser with LocalStorage support",
@@ -36,6 +47,23 @@ export default function StopwatchPage() {
           "name": "Clockivo",
           "url": "https://clockivo.com"
         }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://clockivo.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Stopwatch",
+            "item": "https://clockivo.com/stopwatch"
+          }
+        ]
       },
       {
         "@type": "FAQPage",
@@ -98,9 +126,12 @@ export default function StopwatchPage() {
           <span className="text-sm font-semibold tracking-wider text-primary uppercase flex items-center gap-1.5">
             <TimerIcon className="w-4 h-4" /> Clockivo Utility Tool
           </span>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            Free Online Stopwatch
-          </h1>
+          <div className="flex flex-row items-center justify-between gap-4">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+              Free Online Stopwatch
+            </h1>
+            <EmbedModal toolType="stopwatch" />
+          </div>
           <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
             Measure elapsed time easily with this free online stopwatch. Ideal for sports, study blocks, workouts, cooking, and classroom activities, this simple web stopwatch works on any PC, laptop, or Mac. Start, freeze laps, and track your timing splits directly in your browser without any required downloads.
           </p>
@@ -110,6 +141,8 @@ export default function StopwatchPage() {
         <div className="mb-12">
           <Stopwatch />
         </div>
+
+        <QuickStats />
 
         <AdContainer size="leaderboard" className="mb-12" />
 

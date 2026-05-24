@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Clock from "@/components/clock"
+import QuickStats from "@/components/quick-stats"
 import { Clock as ClockIcon, Disc, Compass, Layers } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -59,6 +60,8 @@ export default function AnalogClockPage() {
         <div className="mb-12">
           <Clock defaultMode="analog" />
         </div>
+
+        <QuickStats />
 
         {/* SEO On-Page Content Foundations */}
         <section className="border-t pt-10 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-foreground pb-12">

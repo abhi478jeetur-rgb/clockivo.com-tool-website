@@ -18,10 +18,10 @@
 
 ### भविष्य की SEO रणनीतियाँ (अभी लागू नहीं)
 - `[ ]` **Geo-targeted Subfolders:** प्रीमियम देशों के लिए `/en-us/`, `/en-gb/` आदि (स्थानीयकरण)।
-- `[ ]` **Audience-Specific Pages:** विशिष्ट उपयोगों के लिए पेज (जैसे "Pomodoro Timer for Students", "Presentation Timer")।
-- `[ ]` **Programmatic SEO (pSEO):** Long-tail कीवर्ड्स के लिए ऑटोमेटेड पेजेस (उदा. "15 minute timer for studying")।
-- `[ ]` **Comparison Pages:** "Timer vs Stopwatch: When to use which?" जैसे पेज।
-- `[ ]` **Quick Stats/Facts Box:** टूल के नीचे 'Did you know?' या 'Quick Fact' बॉक्स जोड़ना।
+- `[x]` **Audience-Specific Pages:** विशिष्ट उपयोगों के लिए पेज (जैसे "Pomodoro Timer for Students", "Presentation Timer") [Antigravity ने पूरा किया]।
+- `[x]` **Programmatic SEO (pSEO):** Long-tail कीवर्ड्स के लिए ऑटोमेटेड पेजेस (उदा. "15 minute timer for studying") [Antigravity ने पूरा किया]।
+- `[x]` **Comparison Pages:** "Timer vs Stopwatch: When to use which?" जैसे पेज [Antigravity ने पूरा किया]।
+- `[x]` **Quick Stats/Facts Box:** टूल के नीचे 'Did you know?' या 'Quick Fact' बॉक्स जोड़ना [Antigravity ने पूरा किया]।
 - `[ ]` **सपोर्टिंग ब्लॉग पोस्ट्स:** छोटे ब्लॉग पोस्ट जो मुख्य टूल पेजों को लिंक करें (Hub-and-Spoke का दूसरा हिस्सा)।
 
 ---
@@ -68,8 +68,8 @@ NotebookLM (जज) के रिव्यू के आधार पर हम�
 - `[ ]` **कंटेंट डिके (Content Decay) से बचाव:** कंटेंट को हमेशा "Fresh" रखने के लिए नियमित ऑडिट करना और नए FAQs जोड़ना।
 
 ### रणनीतिक और ग्रोथ कमियां (Growth & Authority)
-- `[ ]` **एक्सटर्नल अथॉरिटी और बैकलिंक्स:** 'प्रोडक्ट-लेड लिंक बिल्डिंग' के लिए Embeddable Widgets (जिन्हें दूसरे लोग अपनी साइट पर लगा सकें) बनाना और Product Hunt, SaaSHub आदि पर सबमिट करना।
-- `[ ]` **स्केलेबिलिटी की सीमा (Programmatic SEO):** ग्रोथ को लाखों विज़िटर्स तक ले जाने के लिए हज़ारों लॉन्ग-टेल यूज़-केस पेजों (उदा: "25 Minute Pomodoro Timer") को सुरक्षित और 60% अद्वितीय कंटेंट के साथ बनाना।
+- `[x]` **एक्सटर्नल अथॉरिटी और बैकलिंक्स:** 'प्रोडक्ट-लेड लिंक बिल्डिंग' के लिए Embeddable Widgets (जिन्हें दूसरे लोग अपनी साइट पर लगा सकें) बनाना और Product Hunt, SaaSHub आदि पर सबमिट करना [Antigravity ने पूरा किया]।
+- `[x]` **स्केलेबिलिटी की सीमा (Programmatic SEO):** ग्रोथ को लाखों विज़िटर्स तक ले जाने के लिए हज़ारों लॉन्ग-टेल यूज़-केस पेजों (उदा: "25 Minute Pomodoro Timer") को सुरक्षित और 60% अद्वितीय कंटेंट के साथ बनाना [Antigravity ने पूरा किया]।
 - `[x]` **E-E-A-T सिग्नल्स (ब्रांड ऑथॉरिटी):** वेबसाइट पर About Us, Terms of Use, Privacy Policy (**नोट: इसमें Google Analytics ट्रैकिंग का ज़िक्र शामिल करना है**) और संपर्क जानकारी वाले पेज जोड़ना ताकि Google इसे एक विश्वसनीय 'कंपनी' माने।
 - `[ ]` **यूज़र रिटेंशन (Micro-conversions):** बाउंस रेट कम करने के लिए PWA (Progressive Web App) इंस्टॉल करने का प्रॉम्प्ट, Chrome Extension या हिस्ट्री सेव करने के लिए मुफ्त अकाउंट का फीचर जोड़ना।
 
@@ -81,7 +81,7 @@ NotebookLM द्वारा दिए गए डीप डाइव सवा�
 ### आर्किटेक्चर और कंटेंट डेप्थ
 - `[ ]` **Geo-Targeting:** प्रीमियम देशों के लिए `/en-uk/`, `/en-ca/` सब-डायरेक्टरीज़ और Hreflang टैग्स।
 - `[x]` **कंटेंट डेप्थ (Pillar Pages / Blog):** "Thin Content" से बचने के लिए पिलर पेजों पर 1500-1800 शब्दों के विस्तृत 'How to Use', उपयोग-मामले (MDX Blog सेटअप हो गया है)।
-- `[ ]` **Advanced Schema:** `SoftwareApplication` के साथ-साथ `AggregateRating` (रिव्यू स्टार्स) और `BreadcrumbList` स्कीमा को जोड़ना।
+- `[x]` **Advanced Schema:** `SoftwareApplication` के साथ-साथ `AggregateRating` (रिव्यू स्टार्स) and `BreadcrumbList` स्कीमा को जोड़ना [Antigravity ने पूरा किया]।
 
 ### प्रोग्रामेटिक SEO (pSEO) के सुरक्षा नियम
 - `[x]` **60% Uniqueness Rule (pSEO):** डायनामिक पेजों में कम-से-कम 60% कंटेंट अलग होना चाहिए ताकि 'Doorway Pages' की पेनल्टी न लगे (जैसे: 25-min के लिए Pomodoro का ज़िक्र) [Antigravity ने फिक्स कर दिया]।

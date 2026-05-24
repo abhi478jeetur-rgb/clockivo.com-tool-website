@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/docs",
+      "destination": "/help",
+      "permanent": true
+    },
+    {
+      "source": "/docs/:path*",
+      "destination": "/help",
+      "permanent": true
+    }
+  ]
+}

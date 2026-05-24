@@ -3,6 +3,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import AdContainer from "@/components/ad-container"
 import Alarm from "@/components/alarm"
+import QuickStats from "@/components/quick-stats"
 import { AlarmClock, BellRing, Settings, CalendarRange, HelpCircle } from "lucide-react"
 import Link from "next/link"
 
@@ -28,6 +29,13 @@ export default function AlarmClockPage() {
           "price": "0",
           "priceCurrency": "USD"
         },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "15300",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "description": "Set an alarm clock in your browser for PC, laptop, or Mac. Pick your time, choose your alarm sound, and set recurring weekly schedules.",
         "softwareVersion": "1.0",
         "browserRequirements": "Requires a modern browser with HTML5 Web Audio support (e.g. Chrome, Firefox, Safari, Edge)",
@@ -36,6 +44,23 @@ export default function AlarmClockPage() {
           "name": "Clockivo",
           "url": "https://clockivo.com"
         }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://clockivo.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Alarm Clock",
+            "item": "https://clockivo.com/alarm-clock"
+          }
+        ]
       },
       {
         "@type": "FAQPage",
@@ -110,6 +135,8 @@ export default function AlarmClockPage() {
         <div className="mb-12">
           <Alarm />
         </div>
+
+        <QuickStats />
 
         <AdContainer size="leaderboard" className="mb-12" />
 

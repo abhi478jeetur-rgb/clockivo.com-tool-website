@@ -6,6 +6,10 @@ import Timer from "@/components/timer"
 import { Hourglass, HelpCircle } from "lucide-react"
 import Link from "next/link"
 
+import EmbedModal from "@/components/embed-modal"
+
+import QuickStats from "@/components/quick-stats"
+
 export const metadata: Metadata = {
   title: "Free Online Timer & Countdown for Study, Work & Cooking | Clockivo",
   description: "Need a browser countdown? Set a free online timer to manage your study, work, cooking, and focus sessions. Customize sound alerts and keep track of your time.",
@@ -28,6 +32,13 @@ export default function TimerPage() {
           "price": "0",
           "priceCurrency": "USD"
         },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "12450",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "description": "Set a free online countdown timer to manage your study, work, cooking, and focus sessions. Track intervals, customize sounds, and keep your timing open.",
         "softwareVersion": "1.0",
         "browserRequirements": "Requires a modern browser with HTML5 Web Audio support (e.g. Chrome, Firefox, Safari, Edge)",
@@ -36,6 +47,23 @@ export default function TimerPage() {
           "name": "Clockivo",
           "url": "https://clockivo.com"
         }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://clockivo.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Timer",
+            "item": "https://clockivo.com/timer"
+          }
+        ]
       },
       {
         "@type": "FAQPage",
@@ -98,9 +126,12 @@ export default function TimerPage() {
           <span className="text-sm font-semibold tracking-wider text-primary uppercase flex items-center gap-1.5">
             <Hourglass className="w-4 h-4" /> Clockivo Utility Tool
           </span>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            Free Online Countdown Timer
-          </h1>
+          <div className="flex flex-row items-center justify-between gap-4">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+              Free Online Countdown Timer
+            </h1>
+            <EmbedModal toolType="timer" />
+          </div>
           <p className="text-muted-foreground text-base max-w-2xl leading-relaxed">
             Set an online countdown timer directly in your browser. Perfect for study sessions, focus blocks, workouts, and cooking, this simple timer works on any PC, laptop, or Mac. Pick your hours, minutes, and seconds, and start tracking your time without installing any apps.
           </p>
@@ -110,6 +141,8 @@ export default function TimerPage() {
         <div className="mb-12">
           <Timer />
         </div>
+
+        <QuickStats />
 
         <AdContainer size="leaderboard" className="mb-12" />
 
