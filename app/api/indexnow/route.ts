@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 const INDEXNOW_KEY = "a6d510c85c2c4dfdbbc2df600b3e6481"
 const HOST = "www.clockivo.com"
-const KEY_LOCATION = `https://${HOST}/${INDEXNOW_KEY}.txt`
+const KEY_LOCATION = `https://www.clockivo.com/${INDEXNOW_KEY}.txt`
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const response = await fetch("https://api.indexnow.org/IndexNow", {
+    const response = await fetch("https://yandex.com/indexnow", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing or invalid 'urls' array in body" }, { status: 400 })
     }
 
-    const response = await fetch("https://api.indexnow.org/IndexNow", {
+    const response = await fetch("https://yandex.com/indexnow", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",

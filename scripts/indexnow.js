@@ -4,7 +4,7 @@ const path = require("path");
 const INDEXNOW_KEY = "a6d510c85c2c4dfdbbc2df600b3e6481";
 const HOST = "www.clockivo.com";
 const BASE_URL = `https://${HOST}`;
-const KEY_LOCATION = `${BASE_URL}/${INDEXNOW_KEY}.txt`;
+const KEY_LOCATION = `https://www.clockivo.com/${INDEXNOW_KEY}.txt`;
 
 // 1. Static pages
 const staticPages = [
@@ -70,10 +70,8 @@ async function run() {
   }
 
   console.log(`Gathered ${urls.length} URLs for IndexNow.`);
-  console.log("Submitting to IndexNow API...");
-
   try {
-    const response = await fetch("https://api.indexnow.org/IndexNow", {
+    const response = await fetch("https://yandex.com/indexnow", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
