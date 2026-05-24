@@ -137,41 +137,96 @@ export default async function DynamicTimerPage({ params }: { params: Promise<{ d
     );
   }
 
-  // Schema Markup - FAQ & SoftwareApplication
-  const faqSchema = {
+  // Schema Markup - FAQ & SoftwareApplication Graph
+  const schemaData = {
     "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
+    "@graph": [
       {
-        "@type": "Question",
-        "name": `Is the ${title} timer accurate?`,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, our timers run completely inside your local browser using performance APIs, bypassing server lag for absolute millisecond-level precision."
+        "@type": "SoftwareApplication",
+        "name": `Clockivo ${title} Timer`,
+        "operatingSystem": "Windows, macOS, Linux, iOS, Android, ChromeOS",
+        "applicationCategory": "UtilitiesApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": `Set a free online ${title} countdown timer on your PC or mobile browser. Accurate timing, clean display, custom sound waves, and 100% privacy-first local storage processing.`,
+        "softwareVersion": "1.2.0",
+        "isAccessibleForFree": true,
+        "screenshot": "https://www.clockivo.com/clockivo-logo.png",
+        "featureList": [
+          `Custom duration countdown optimized for ${title}`,
+          "Web Audio API custom synthesizer alarm ring",
+          "Mobile-responsive full screen interface layout",
+          "Local storage statistics logs and session memory",
+          "Works offline after page load"
+        ],
+        "browserRequirements": "Requires a modern browser with HTML5 and LocalStorage support",
+        "author": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
         }
       },
       {
-        "@type": "Question",
-        "name": "Does the alarm sound if my screen goes to sleep?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Most modern browsers will allow background audio alerts to trigger when the tab is active. We recommend setting your computer or phone sleep settings to allow keeping tabs open during long timers."
+        "@type": "Organization",
+        "@id": "https://clockivo.com/#organization",
+        "name": "Clockivo",
+        "url": "https://clockivo.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://clockivo.com/clockivo-logo.png"
         }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://clockivo.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Timer",
+            "item": "https://clockivo.com/timer"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": title,
+            "item": `https://clockivo.com/timer/${duration}`
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": `Is the ${title} timer accurate?`,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, our timers run completely inside your local browser using performance APIs, bypassing server lag for absolute millisecond-level precision."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does the alarm sound if my screen goes to sleep?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most modern browsers will allow background audio alerts to trigger when the tab is active. We recommend setting your computer or phone sleep settings to allow keeping tabs open during long timers."
+            }
+          }
+        ]
       }
     ]
-  };
-
-  const softwareSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": `Clockivo ${title} Timer`,
-    "operatingSystem": "All",
-    "applicationCategory": "ProductivityApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
   };
 
   return (
@@ -234,11 +289,7 @@ export default async function DynamicTimerPage({ params }: { params: Promise<{ d
       {/* JSON-LD Schemas */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
       />
 
       <Footer />

@@ -20,7 +20,7 @@ export default function Home() {
       {
         "@type": "SoftwareApplication",
         "name": "Clockivo Online Time Tools Suite",
-        "operatingSystem": "All",
+        "operatingSystem": "Windows, macOS, Linux, iOS, Android, ChromeOS",
         "applicationCategory": "UtilitiesApplication",
         "offers": {
           "@type": "Offer",
@@ -28,7 +28,9 @@ export default function Home() {
           "priceCurrency": "USD"
         },
         "description": "Access all your essential time-management tools online. Setup customizable alarms, countdown timers, high-precision lap stopwatches, and live world clocks instantly.",
-        "softwareVersion": "1.0",
+        "softwareVersion": "1.2.0",
+        "isAccessibleForFree": true,
+        "screenshot": "https://www.clockivo.com/clockivo-logo.png",
         "browserRequirements": "Requires a modern browser with HTML5 and LocalStorage support",
         "aggregateRating": {
           "@type": "AggregateRating",
@@ -37,15 +39,40 @@ export default function Home() {
         },
         "featureList": [
           "Custom audio alarm synthesizers",
-          "High precision lap stopwatch",
-          "Full screen responsive digital clock",
-          "Local-first privacy safe storage"
+          "High precision lap stopwatch with milliseconds accuracy",
+          "Full screen responsive digital and analog clocks",
+          "Multiple searchable world timezone tracker display dashboard",
+          "Local-first privacy safe browser storage"
         ],
         "author": {
           "@type": "Organization",
-          "name": "Clockivo",
-          "url": "https://clockivo.com"
+          "@id": "https://clockivo.com/#organization"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
         }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://clockivo.com/#organization",
+        "name": "Clockivo",
+        "url": "https://clockivo.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://clockivo.com/clockivo-logo.png"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://clockivo.com"
+          }
+        ]
       },
       {
         "@type": "FAQPage",

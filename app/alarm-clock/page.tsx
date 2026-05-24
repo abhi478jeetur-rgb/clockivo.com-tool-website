@@ -22,7 +22,7 @@ export default function AlarmClockPage() {
       {
         "@type": "SoftwareApplication",
         "name": "Clockivo Online Alarm Clock",
-        "operatingSystem": "All",
+        "operatingSystem": "Windows, macOS, Linux, iOS, Android, ChromeOS",
         "applicationCategory": "UtilitiesApplication",
         "offers": {
           "@type": "Offer",
@@ -37,12 +37,34 @@ export default function AlarmClockPage() {
           "worstRating": "1"
         },
         "description": "Set an alarm clock in your browser for PC, laptop, or Mac. Pick your time, choose your alarm sound, and set recurring weekly schedules.",
-        "softwareVersion": "1.0",
+        "softwareVersion": "1.2.0",
+        "isAccessibleForFree": true,
+        "screenshot": "https://www.clockivo.com/clockivo-logo.png",
+        "featureList": [
+          "Set multiple digital alarms",
+          "Web Audio API synthesized sound alerts",
+          "Recurring daily and weekly schedules",
+          "Browser LocalStorage session data backup",
+          "Active background tab wake-up alerts"
+        ],
         "browserRequirements": "Requires a modern browser with HTML5 Web Audio support (e.g. Chrome, Firefox, Safari, Edge)",
         "author": {
           "@type": "Organization",
-          "name": "Clockivo",
-          "url": "https://clockivo.com"
+          "@id": "https://clockivo.com/#organization"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://clockivo.com/#organization",
+        "name": "Clockivo",
+        "url": "https://clockivo.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://clockivo.com/clockivo-logo.png"
         }
       },
       {
@@ -148,7 +170,7 @@ export default function AlarmClockPage() {
             </h2>
             {/* Direct Answer for AI Overviews */}
             <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
-              To set an online alarm, choose your desired hour and minute, select an alarm sound, give it a label, and click "Save". Keep this browser tab open and your device awake for the alarm to trigger.
+              To set a **free online alarm clock**, choose your desired wake-up hour and minute, select a custom alarm sound, and click **Save**. Keep this browser tab open and your device active so the alarm triggers perfectly.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">

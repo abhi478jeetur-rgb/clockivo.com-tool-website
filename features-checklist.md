@@ -106,3 +106,22 @@ NotebookLM द्वारा दिए गए डीप डाइव सवा�
 - `[x]` **इंगेजमेंट ट्रैकिंग:** Time on Page, Bounce Rate, और Scroll Depth को मापना [GA4 ऑटोमैटिक enhanced measurements से पूरा किया]।
 - `[x]` **UX परफॉरमेंस मेट्रिक्स:** Analytics में INP (Interaction to Next Paint) को लाइव ट्रैक करना [GA4 dynamic user-timing tracks से पूरा किया]।
 - `[x]` **A/B TESTING:** अलग-अलग हेडलाइन्स और टूल प्लेसमेंट का परीक्षण करना कि कहाँ सबसे ज़्यादा क्लिक (timer_started) आते हैं [GA4 content experiments से पूरा किया]।
+
+---
+
+## 5. Bing Webmaster Tools & Edge Copilot SEO Optimization
+
+### IndexNow Integration (Instant Indexing)
+- `[x]` **IndexNow Key File:** रूट डायरेक्टरी (public folder) में verification key `.txt` फ़ाइल होस्ट करना [Antigravity ने पूरा किया]।
+- `[x]` **IndexNow API Route:** URL सबमिट करने के लिए सुरक्षित Next.js API route (`/api/indexnow`) बनाना [Antigravity ने पूरा किया]।
+- `[x]` **IndexNow CLI Script:** पूरे sitemap के URLs को एक साथ Bing पर इंडेक्स कराने के लिए Node.js सबमिशन स्क्रिप्ट (`scripts/indexnow.js`) [Antigravity ने पूरा किया]।
+
+### Advanced Schema Markup (Bing & Copilot Graphs)
+- `[x]` **Enhanced SoftwareApplication Schema:** `operatingSystem`, `applicationCategory`, `featureList`, `isAccessibleForFree`, `softwareVersion`, और `screenshot` जैसी सभी Bing-अनुकूलित प्रॉपर्टीज़ जोड़ना [Antigravity ने पूरा किया]।
+- `[x]` **Unified Schema Graph:** सभी टूल पेजों पर `SoftwareApplication` + `BreadcrumbList` + `Organization` + `FAQPage` को एक साथ कनेक्टेड `@graph` संरचना में जोड़ना [Antigravity ने पूरा किया]।
+
+### Edge Copilot AI & GEO (Generative Engine Optimization)
+- `[x]` **Conversational Headings:** प्राकृतिक भाषा वाले H2/H3 हेडिंग्स (जैसे "How do I...?") [Antigravity ने पूरा किया]।
+- `[x]` **High-Density Direct Answers:** हर मुख्य H2 हेडिंग के ठीक नीचे 30-40 शब्दों का सटीक उत्तर ताकि Copilot इसे आसानी से उद्धृत (Cite) कर सके [Antigravity ने पूरा किया]।
+- `[x]` **Structured Facts & Specifications:** सूचियों (lists) और टेबल्स का उपयोग करके AI-चंकिंग को बढ़ावा देना [Antigravity ने पूरा किया]।
+

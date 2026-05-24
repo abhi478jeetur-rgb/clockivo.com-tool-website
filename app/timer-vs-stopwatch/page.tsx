@@ -16,33 +16,78 @@ export const metadata: Metadata = {
 };
 
 export default function TimerVsStopwatchPage() {
-  const faqSchema = {
+  const schemaData = {
     "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
+    "@graph": [
       {
-        "@type": "Question",
-        "name": "What is the main difference between a timer and a stopwatch?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "A countdown timer counts down from a specific duration to zero and triggers an alarm alert when complete. A stopwatch, on the other hand, counts up from zero to measure elapsed duration, often supporting lap/split splits."
+        "@type": "WebPage",
+        "@id": "https://clockivo.com/timer-vs-stopwatch#webpage",
+        "url": "https://clockivo.com/timer-vs-stopwatch",
+        "name": "Timer vs Stopwatch Comparison Guide | Clockivo",
+        "description": "Confused between a timer and a stopwatch? Read our comprehensive comparison guide, try both side-by-side, and discover which is best for studying, exercise, or productivity.",
+        "breadcrumb": {
+          "@id": "https://clockivo.com/timer-vs-stopwatch#breadcrumb"
+        },
+        "publisher": {
+          "@id": "https://clockivo.com/#organization"
         }
       },
       {
-        "@type": "Question",
-        "name": "When should I use a timer?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Use a countdown timer when you want to allocate a fixed time block for a task (e.g., 25 minutes for Pomodoro studying, 5 minutes for cooking, or gym interval rounds)."
+        "@type": "Organization",
+        "@id": "https://clockivo.com/#organization",
+        "name": "Clockivo",
+        "url": "https://clockivo.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://clockivo.com/clockivo-logo.png"
         }
       },
       {
-        "@type": "Question",
-        "name": "When should I use a stopwatch?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Use a stopwatch when you want to measure exactly how long a task takes to complete (e.g., running laps, speedrunning code tasks, or tracking exact billable hours)."
-        }
+        "@type": "BreadcrumbList",
+        "@id": "https://clockivo.com/timer-vs-stopwatch#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://clockivo.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Timer vs Stopwatch",
+            "item": "https://clockivo.com/timer-vs-stopwatch"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the main difference between a timer and a stopwatch?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A countdown timer counts down from a specific duration to zero and triggers an alarm alert when complete. A stopwatch, on the other hand, counts up from zero to measure elapsed duration, often supporting lap/split splits."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "When should I use a timer?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use a countdown timer when you want to allocate a fixed time block for a task (e.g., 25 minutes for Pomodoro studying, 5 minutes for cooking, or gym interval rounds)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "When should I use a stopwatch?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use a stopwatch when you want to measure exactly how long a task takes to complete (e.g., running laps, speedrunning code tasks, or tracking exact billable hours)."
+            }
+          }
+        ]
       }
     ]
   };
@@ -188,10 +233,10 @@ export default function TimerVsStopwatchPage() {
 
       </main>
 
-      {/* Inject FAQ Schema */}
+      {/* Inject Unified Schema Graph */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
       />
 
       <Footer />

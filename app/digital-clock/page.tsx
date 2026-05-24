@@ -16,23 +16,66 @@ export const metadata: Metadata = {
 export default function DigitalClockPage() {
   const schemaData = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Clockivo Online Digital Clock",
-    "operatingSystem": "All",
-    "applicationCategory": "UtilitiesApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "description": "View an accurate online digital clock displaying seconds, hours, and live date updates. Features fullscreen theater layout, adjustable night colors, and hourly chime warnings.",
-    "softwareVersion": "1.0",
-    "browserRequirements": "Requires a modern browser with SVG and LocalStorage support",
-    "author": {
-      "@type": "Organization",
-      "name": "Clockivo",
-      "url": "https://clockivo.com"
-    }
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "Clockivo Online Digital Clock",
+        "operatingSystem": "Windows, macOS, Linux, iOS, Android, ChromeOS",
+        "applicationCategory": "UtilitiesApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "View an accurate online digital clock displaying seconds, hours, and live date updates. Features fullscreen theater layout, adjustable night colors, and hourly chime warnings.",
+        "softwareVersion": "1.2.0",
+        "isAccessibleForFree": true,
+        "screenshot": "https://www.clockivo.com/clockivo-logo.png",
+        "featureList": [
+          "Accurate digital clock display with optional seconds",
+          "Fullscreen theater mode for wall or bedside displays",
+          "Eye-friendly neon color profiles (Red, Amber, Green) for night use",
+          "Intl API driven automatic timezone sync",
+          "Configurable hourly notification chime alarms"
+        ],
+        "browserRequirements": "Requires a modern browser with SVG and LocalStorage support",
+        "author": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://clockivo.com/#organization",
+        "name": "Clockivo",
+        "url": "https://clockivo.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://clockivo.com/clockivo-logo.png"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://clockivo.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Digital Clock",
+            "item": "https://clockivo.com/digital-clock"
+          }
+        ]
+      }
+    ]
   }
 
   return (
@@ -64,38 +107,50 @@ export default function DigitalClockPage() {
         <QuickStats />
 
         {/* SEO On-Page Content Foundations */}
-        <section className="border-t pt-10 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-foreground pb-12">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
-              <Tv className="w-5 h-5 text-primary" /> Fullscreen Display Mode
+        <section className="border-t pt-10 mt-12 text-foreground pb-12">
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold tracking-tight mb-4 text-foreground">
+              How to Use the Online Digital Clock?
             </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              Turn any device into an elegant bedside table clock or static wall display. Tap the <strong>Maximize</strong> icon in the corner to trigger full-screen rendering. The layout auto-scales to deliver beautiful visual readability even from across large rooms.
-            </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              This layout is perfectly responsive on smartphones, tablets, Chromebooks, and smart TVs.
+            {/* Direct Answer for AI Overviews */}
+            <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
+              To read our **online digital clock**, keep this browser window open. It renders precise system time with seconds, supports neon sleep glow styles (red, amber, green), and displays a clear fullscreen theater layout.
             </p>
           </div>
 
-          <div>
-            <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
-              <Moon className="w-5 h-5 text-primary" /> Night Glow Presets
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              Avoid sleep cycle disruptions. While in full screen, select specialized ambient colors like <em>Deep Red</em> for warm sleep environments, <em>Sunset Amber</em>, or <em>Muted Green</em>.
-            </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              These monochromatic profiles emit minimum high-frequency blue rays, keeping your bedroom dark and peaceful.
-            </p>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+            <div>
+              <h3 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
+                <Tv className="w-5 h-5 text-primary" /> Fullscreen Display Mode
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                Turn any device into an elegant bedside table clock or static wall display. Tap the <strong>Maximize</strong> icon in the corner to trigger full-screen rendering. The layout auto-scales to deliver beautiful visual readability even from across large rooms.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                This layout is perfectly responsive on smartphones, tablets, Chromebooks, and smart TVs.
+              </p>
+            </div>
 
-          <div className="md:col-span-2">
-            <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-primary" /> Multi-Format Synchronization
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Set your preferred readability standard. Clockivo offers multiple formatting presets, including full readable weekdays (e.g. Wednesday, October 15th), standard European numeric sequences (DD/MM/YYYY), or classic US paths (MM/DD/YYYY). All offsets are evaluated from your browser&apos;s internal system timezone automatically.
-            </p>
+            <div>
+              <h3 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
+                <Moon className="w-5 h-5 text-primary" /> Night Glow Presets
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                Avoid sleep cycle disruptions. While in full screen, select specialized ambient colors like <em>Deep Red</em> for warm sleep environments, <em>Sunset Amber</em>, or <em>Muted Green</em>.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                These monochromatic profiles emit minimum high-frequency blue rays, keeping your bedroom dark and peaceful.
+              </p>
+            </div>
+
+            <div className="md:col-span-2 border-t pt-6 mt-4">
+              <h3 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-primary" /> Multi-Format Time Synchronization
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Set your preferred readability standard. Clockivo offers multiple formatting presets, including full readable weekdays (e.g. Wednesday, October 15th), standard European numeric sequences (DD/MM/YYYY), or classic US paths (MM/DD/YYYY). All offsets are evaluated from your browser&apos;s internal system timezone automatically.
+              </p>
+            </div>
           </div>
         </section>
       </main>

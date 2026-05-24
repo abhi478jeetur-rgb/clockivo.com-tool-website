@@ -25,7 +25,7 @@ export default function StopwatchPage() {
       {
         "@type": "SoftwareApplication",
         "name": "Clockivo Online Stopwatch & Chronometer",
-        "operatingSystem": "All",
+        "operatingSystem": "Windows, macOS, Linux, iOS, Android, ChromeOS",
         "applicationCategory": "UtilitiesApplication",
         "offers": {
           "@type": "Offer",
@@ -40,12 +40,34 @@ export default function StopwatchPage() {
           "worstRating": "1"
         },
         "description": "Run a free online stopwatch with lap timing capabilities to track workouts, study sessions, science experiments, or presentations.",
-        "softwareVersion": "1.0",
+        "softwareVersion": "1.2.0",
+        "isAccessibleForFree": true,
+        "screenshot": "https://www.clockivo.com/clockivo-logo.png",
+        "featureList": [
+          "Millisecond display accuracy (performance.now API)",
+          "Split and lap time tracking",
+          "Detailed, interactive laps and splits history table",
+          "Local storage sessions cache",
+          "Fully responsive mobile and desktop dial layout"
+        ],
         "browserRequirements": "Requires a modern browser with LocalStorage support",
         "author": {
           "@type": "Organization",
-          "name": "Clockivo",
-          "url": "https://clockivo.com"
+          "@id": "https://clockivo.com/#organization"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://clockivo.com/#organization",
+        "name": "Clockivo",
+        "url": "https://clockivo.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://clockivo.com/clockivo-logo.png"
         }
       },
       {
@@ -154,7 +176,7 @@ export default function StopwatchPage() {
             </h2>
             {/* Direct Answer for AI Overviews */}
             <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
-              To use an online stopwatch, simply click the "Start" button to begin counting in milliseconds. Use the "Lap" button to record split times without stopping the main clock. Click "Pause" to temporarily halt timing, or "Reset" to clear all recorded laps.
+              To run our **free online stopwatch with lap timer**, click the **Start** button to measure milliseconds. Tap **Lap** to record split times during workouts or study blocks, and **Reset** to clear all logs.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">

@@ -25,7 +25,7 @@ export default function TimerPage() {
       {
         "@type": "SoftwareApplication",
         "name": "Clockivo Online Countdown Timer",
-        "operatingSystem": "All",
+        "operatingSystem": "Windows, macOS, Linux, iOS, Android, ChromeOS",
         "applicationCategory": "UtilitiesApplication",
         "offers": {
           "@type": "Offer",
@@ -40,12 +40,34 @@ export default function TimerPage() {
           "worstRating": "1"
         },
         "description": "Set a free online countdown timer to manage your study, work, cooking, and focus sessions. Track intervals, customize sounds, and keep your timing open.",
-        "softwareVersion": "1.0",
+        "softwareVersion": "1.2.0",
+        "isAccessibleForFree": true,
+        "screenshot": "https://www.clockivo.com/clockivo-logo.png",
+        "featureList": [
+          "Custom countdown durations (hours, minutes, seconds)",
+          "One-click quick presets (5m, 10m, Pomodoro 25m)",
+          "Beautiful circular glassmorphic visual countdown progress ring",
+          "Local countdown logs and session history",
+          "Custom synthesized sound alerts"
+        ],
         "browserRequirements": "Requires a modern browser with HTML5 Web Audio support (e.g. Chrome, Firefox, Safari, Edge)",
         "author": {
           "@type": "Organization",
-          "name": "Clockivo",
-          "url": "https://clockivo.com"
+          "@id": "https://clockivo.com/#organization"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://clockivo.com/#organization",
+        "name": "Clockivo",
+        "url": "https://clockivo.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://clockivo.com/clockivo-logo.png"
         }
       },
       {
@@ -154,7 +176,7 @@ export default function TimerPage() {
             </h2>
             {/* Direct Answer for AI Overviews */}
             <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
-              To start an online countdown timer, enter your desired hours, minutes, and seconds, or select a quick preset. Press play to begin the countdown, and keep the browser tab open to hear the audio alert when time is up.
+              To start a **free online countdown timer**, select your preferred hours, minutes, and seconds, or pick a preset. Click **Start** to trigger the visual timing ring and keep the browser tab open to hear the wake-up alarm.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">

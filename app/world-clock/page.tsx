@@ -22,7 +22,7 @@ export default function WorldClockPage() {
       {
         "@type": "SoftwareApplication",
         "name": "Clockivo Online World Clock",
-        "operatingSystem": "All",
+        "operatingSystem": "Windows, macOS, Linux, iOS, Android, ChromeOS",
         "applicationCategory": "UtilitiesApplication",
         "offers": {
           "@type": "Offer",
@@ -30,13 +30,52 @@ export default function WorldClockPage() {
           "priceCurrency": "USD"
         },
         "description": "Check current local times and time zones worldwide with Clockivo. Coordinate international meetings and remote workflows.",
-        "softwareVersion": "1.0",
+        "softwareVersion": "1.2.0",
+        "isAccessibleForFree": true,
+        "screenshot": "https://www.clockivo.com/clockivo-logo.png",
+        "featureList": [
+          "Check multiple world cities simultaneously",
+          "High precision time synchronization via local Intl APIs",
+          "Analog and digital timezone visual clock modules",
+          "Automatic Daylight Saving Time adjustment updates",
+          "Custom searchable cities dashboard interface"
+        ],
         "browserRequirements": "Requires a modern browser with high-precision internationalization API (Intl) capabilities",
         "author": {
           "@type": "Organization",
-          "name": "Clockivo",
-          "url": "https://clockivo.com"
+          "@id": "https://clockivo.com/#organization"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://clockivo.com/#organization"
         }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://clockivo.com/#organization",
+        "name": "Clockivo",
+        "url": "https://clockivo.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://clockivo.com/clockivo-logo.png"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://clockivo.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "World Clock",
+            "item": "https://clockivo.com/world-clock"
+          }
+        ]
       },
       {
         "@type": "FAQPage",
@@ -124,7 +163,7 @@ export default function WorldClockPage() {
             </h2>
             {/* Direct Answer for AI Overviews */}
             <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
-              To check international time zones online, type a city name in the search bar or select it from the predefined list. The world clock will instantly display the current local time, daylight saving offsets, and precise time differences.
+              To check international times on our **free online world clock**, type a city name in the search bar. The tool instantly displays the synchronized local hours, minutes, and daylight saving offsets of global locations.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
