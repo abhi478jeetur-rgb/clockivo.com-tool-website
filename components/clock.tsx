@@ -10,6 +10,7 @@ import { format } from "date-fns"
 import { Maximize, Minimize, BellRing, Settings2, Globe, Search, Star, Sun, Moon, MapPin } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import * as audioLib from "@/lib/audio"
+import { motion, AnimatePresence } from "motion/react"
 
 const playBeep = (durationMs = 500, frequency = 800, type: OscillatorType | string = "sine", volume = 0.5) => {
   if (audioLib && typeof audioLib.playBeep === "function") {
@@ -441,7 +442,11 @@ export default function Clock({ defaultMode }: ClockProps) {
                               <Star className="w-4 h-4 fill-primary" />
                               <span className="text-xs font-bold uppercase tracking-wider">Pinned Favorites ({pinnedList.length})</span>
                           </div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                          <motion.div 
+                            layout
+                            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"
+                          >
+                              <AnimatePresence>
                               {pinnedList.map(city => {
                                   let strTime = ""
                                   let strDate = ""
@@ -461,7 +466,15 @@ export default function Clock({ defaultMode }: ClockProps) {
                                   }
 
                                   return (
-                                      <div key={`pin-${city.name}`} className="flex flex-col p-4 rounded-2xl border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all shadow-xs relative group">
+                                      <motion.div 
+                                          layout
+                                          initial={{ opacity: 0, scale: 0.9 }}
+                                          animate={{ opacity: 1, scale: 1 }}
+                                          exit={{ opacity: 0, scale: 0.9 }}
+                                          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                                          key={`pin-${city.name}`} 
+                                          className="flex flex-col p-4 rounded-2xl border border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all shadow-xs relative group"
+                                      >
                                           <button 
                                               onClick={() => togglePin(city.name)}
                                               className="absolute top-3 right-3 text-primary opacity-80 hover:opacity-100 transition-opacity"
@@ -495,10 +508,11 @@ export default function Clock({ defaultMode }: ClockProps) {
                                                   </span>
                                               </span>
                                           </div>
-                                      </div>
+                                      </motion.div>
                                   )
                               })}
-                          </div>
+                              </AnimatePresence>
+                          </motion.div>
                       </div>
                   )}
 
@@ -512,11 +526,18 @@ export default function Clock({ defaultMode }: ClockProps) {
                       </div>
 
                       {filteredCities.length === 0 ? (
-                          <div className="text-center py-10 rounded-2xl border border-dashed border-border/40 text-muted-foreground text-sm">
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center py-10 rounded-2xl border border-dashed border-border/40 text-muted-foreground text-sm"
+                          >
                               No world cities matched your search query. Try another keyword.
-                          </div>
+                          </motion.div>
                       ) : (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                          <motion.div 
+                            layout
+                            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"
+                          >
                               {filteredCities.map(city => {
                                   const isPinned = pinnedCities.includes(city.name)
                                   let strTime = ""
@@ -537,7 +558,14 @@ export default function Clock({ defaultMode }: ClockProps) {
                                   }
 
                                   return (
-                                      <div key={city.name} className="flex flex-col p-4 rounded-2xl border border-border/30 bg-card hover:bg-muted/10 transition-all shadow-xs relative group">
+                                      <motion.div 
+                                          layout
+                                          initial={{ opacity: 0, scale: 0.95 }}
+                                          animate={{ opacity: 1, scale: 1 }}
+                                          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                                          key={city.name} 
+                                          className="flex flex-col p-4 rounded-2xl border border-border/30 bg-card hover:bg-muted/10 transition-all shadow-xs relative group"
+                                      >
                                           <button 
                                               onClick={() => togglePin(city.name)}
                                               className="absolute top-3 right-3 text-muted-foreground opacity-30 hover:opacity-100 group-hover:opacity-100 transition-all"
@@ -571,10 +599,10 @@ export default function Clock({ defaultMode }: ClockProps) {
                                                   </span>
                                               </span>
                                           </div>
-                                      </div>
+                                      </motion.div>
                                   )
                               })}
-                          </div>
+                          </motion.div>
                       )}
                   </div>
               </div>

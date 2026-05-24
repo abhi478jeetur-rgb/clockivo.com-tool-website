@@ -38,18 +38,25 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/Astronaut_3--working_in_202604271400-ezgif.com-optijpeg.jpg?updatedAt=1777278711822',
+        url: 'https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/night_video-ezgif.com-gif-maker.mp4?updatedAt=1777218846549',
         width: 1200,
         height: 630,
         alt: 'Clockivo timing suite preview with an adorable working astronaut logo',
       }
     ],
+    videos: [
+      {
+        url: 'https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/night_video-ezgif.com-gif-maker.mp4?updatedAt=1777218846549',
+        width: 1200,
+        height: 630,
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Clockivo - Free Online Alarm Clock, Timer & Stopwatch Suite',
     description: 'An elegant, browser-first, and completely secure timing suite. Set customizable alarms with synthesizer waves, countdown timers, stopwatch split sheets, and world clocks instantly with local storage storage.',
-    images: ['https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/Astronaut_3--working_in_202604271400-ezgif.com-optijpeg.jpg?updatedAt=1777278711822'],
+    images: ['https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/night_video-ezgif.com-gif-maker.mp4?updatedAt=1777218846549'],
   },
   robots: {
     index: true,

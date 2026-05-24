@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Play, Square, Flag, RotateCcw, History } from "lucide-react"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
+import { motion, AnimatePresence } from "motion/react"
 
 interface Session {
     id: string;
@@ -198,33 +199,54 @@ export default function Stopwatch() {
             <span>Time</span>
             <span>Total</span>
           </div>
+          <AnimatePresence>
           {laps.map((lap, index) => (
-            <div key={lap.id} className="flex justify-between items-center px-4 py-3 border-b border-border/50 last:border-0 hover:bg-muted/80 rounded-md transition-colors font-mono tabular-nums text-lg">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              key={lap.id} 
+              className="flex justify-between items-center px-4 py-3 border-b border-border/50 last:border-0 hover:bg-muted/80 rounded-md transition-colors font-mono tabular-nums text-lg"
+            >
               <span className="text-muted-foreground">{(laps.length - index).toString().padStart(2, '0')}</span>
               <span className="text-primary/80">{formatTime(lap.delta)}</span>
               <span className="font-semibold">{formatTime(lap.time)}</span>
-            </div>
+            </motion.div>
           ))}
+          </AnimatePresence>
         </ScrollArea>
       )}
 
       {history.length > 0 && !isRunning && time === 0 && (
-        <div className="w-full max-w-md mt-16 px-4 sm:px-0">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md mt-16 px-4 sm:px-0"
+        >
             <h3 className="text-xs font-bold text-muted-foreground mb-4 uppercase tracking-wider text-center flex items-center justify-center gap-2"><History className="w-4 h-4"/> Session History</h3>
             <div className="h-[200px] overflow-y-auto border rounded-xl p-2 bg-card shadow-sm">
+                <AnimatePresence>
                 {history.map(s => {
                     const dDate = new Date(s.completedAt);
                     return (
-                        <div key={s.id} className="flex justify-between items-center p-3 border-b border-border/50 last:border-0 hover:bg-muted/50 rounded-lg text-sm transition-colors">
+                        <motion.div 
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0 }}
+                            key={s.id} 
+                            className="flex justify-between items-center p-3 border-b border-border/50 last:border-0 hover:bg-muted/50 rounded-lg text-sm transition-colors"
+                        >
                             <div className="flex flex-col">
                                 <span className="font-semibold text-foreground font-mono">{formatTime(s.duration)}</span>
                                 <span className="text-xs text-muted-foreground">{dDate.toLocaleDateString()} {dDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                             </div>
-                        </div>
+                        </motion.div>
                     )
                 })}
+                </AnimatePresence>
             </div>
-        </div>
+        </motion.div>
       )}
     </Card>
   )
