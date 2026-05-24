@@ -8,7 +8,7 @@ export default function NotFound() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <div className="relative w-full max-w-md aspect-square mb-8 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-border/50">
         <Image 
-          src="https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/404_written_in_202604261020-ezgif.com-optijpeg.jpg?updatedAt=1777220486838"
+          src="/404_error.jpg"
           alt="404 Page Not Found"
           fill
           priority
