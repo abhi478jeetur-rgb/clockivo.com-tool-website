@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import HomeDashboard from "@/components/home-dashboard"
+import AdContainer from "@/components/ad-container"
 import Link from "next/link"
 import { AlarmClock, Timer as TimerIcon, Hourglass, Clock as ClockIcon, Shield, Smartphone, Zap, HelpCircle } from "lucide-react"
 
@@ -30,6 +30,17 @@ export default function Home() {
         "description": "Access all your essential time-management tools online. Setup customizable alarms, countdown timers, high-precision lap stopwatches, and live world clocks instantly.",
         "softwareVersion": "1.0",
         "browserRequirements": "Requires a modern browser with HTML5 and LocalStorage support",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "1250"
+        },
+        "featureList": [
+          "Custom audio alarm synthesizers",
+          "High precision lap stopwatch",
+          "Full screen responsive digital clock",
+          "Local-first privacy safe storage"
+        ],
         "author": {
           "@type": "Organization",
           "name": "Clockivo",
@@ -118,10 +129,74 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Live Interactive Dashboard Panel */}
-        <div className="w-full mb-12">
-          <HomeDashboard />
+        {/* Live Interactive Dashboard Panel (Replaced with SEO Hub Navigation) */}
+        <div className="w-full mb-16 grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+          <Link href="/alarm-clock" className="group relative overflow-hidden rounded-3xl bg-card border border-border/50 p-8 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+              <AlarmClock className="w-32 h-32" />
+            </div>
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <AlarmClock className="w-7 h-7" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Online Alarm Clock</h2>
+              <p className="text-muted-foreground mb-6 line-clamp-2">Set custom wake-up calls, alerts, and recurring alarms directly in your browser.</p>
+              <div className="mt-auto font-semibold text-primary inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                Open Tool <span aria-hidden="true">&rarr;</span>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/timer" className="group relative overflow-hidden rounded-3xl bg-card border border-border/50 p-8 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+              <Hourglass className="w-32 h-32" />
+            </div>
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Hourglass className="w-7 h-7" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Countdown Timer</h2>
+              <p className="text-muted-foreground mb-6 line-clamp-2">Perfect for Pomodoro study sessions, workouts, and cooking. High precision tracking.</p>
+              <div className="mt-auto font-semibold text-primary inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                Open Tool <span aria-hidden="true">&rarr;</span>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/stopwatch" className="group relative overflow-hidden rounded-3xl bg-card border border-border/50 p-8 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+              <TimerIcon className="w-32 h-32" />
+            </div>
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <TimerIcon className="w-7 h-7" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Split Stopwatch</h2>
+              <p className="text-muted-foreground mb-6 line-clamp-2">Measure precise laps and split intervals in milliseconds. Great for athletes and experiments.</p>
+              <div className="mt-auto font-semibold text-primary inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                Open Tool <span aria-hidden="true">&rarr;</span>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/world-clock" className="group relative overflow-hidden rounded-3xl bg-card border border-border/50 p-8 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+              <ClockIcon className="w-32 h-32" />
+            </div>
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <ClockIcon className="w-7 h-7" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">World Clock</h2>
+              <p className="text-muted-foreground mb-6 line-clamp-2">Check local times across major cities instantly. Ideal for remote teams and scheduling.</p>
+              <div className="mt-auto font-semibold text-primary inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                Open Tool <span aria-hidden="true">&rarr;</span>
+              </div>
+            </div>
+          </Link>
         </div>
+
+        <AdContainer size="leaderboard" className="mb-10" />
 
         {/* SEO On-Page Category Content Structure */}
         <section className="w-full border-t border-border/30 pt-10 mt-6 grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">

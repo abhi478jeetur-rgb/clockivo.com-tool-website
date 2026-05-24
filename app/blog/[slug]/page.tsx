@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import AdContainer from "@/components/ad-container"
 import { getAllPosts, getPostBySlug, getAllSlugs } from "@/lib/blog"
 import { mdxComponents } from "@/components/mdx-components"
 import { format } from "date-fns"
@@ -100,6 +101,8 @@ export default async function BlogPostPage({
           <div className="prose prose-neutral dark:prose-invert max-w-none">
             <MDXRemote source={post.content} components={mdxComponents} />
           </div>
+
+          <AdContainer size="leaderboard" className="mt-10" />
         </article>
       </main>
 

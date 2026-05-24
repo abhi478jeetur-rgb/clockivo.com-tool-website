@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import AdContainer from "@/components/ad-container"
 import Timer from "@/components/timer"
 import { Hourglass, HelpCircle } from "lucide-react"
 import Link from "next/link"
@@ -110,42 +111,42 @@ export default function TimerPage() {
           <Timer />
         </div>
 
+        <AdContainer size="leaderboard" className="mb-12" />
+
         {/* SEO On-Page Content Foundations */}
-        <section className="border-t pt-10 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> How to Use This Browser Timer
+        <section className="border-t pt-10 mt-12 pb-12">
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold tracking-tight mb-4 text-foreground">
+              How to Start an Online Timer?
             </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              To start a countdown, set the hours, minutes, and seconds using our timing interface, or click on the quick preset buttons to add time immediately. Press the play button to start the countdown. You can pause or reset the timer at any time, and your active countdown tracks clearly in the browser tab title.
+            {/* Direct Answer for AI Overviews */}
+            <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
+              To start an online countdown timer, enter your desired hours, minutes, and seconds, or select a quick preset. Press play to begin the countdown, and keep the browser tab open to hear the audio alert when time is up.
             </p>
-          </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" /> Key Features
+                </h3>
+                <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                  <li><strong>Background Accuracy:</strong> Our timer tracks the precise start time internally, so even if the browser tab is throttled, the remaining time stays perfectly accurate.</li>
+                  <li><strong>Multiple Presets:</strong> Quickly jump into popular intervals like a 25-minute Pomodoro session, a 5-minute break, or a 1-hour focus block.</li>
+                  <li><strong>Zero Installation:</strong> A fully web-based timer that works immediately on PCs, Macs, and mobile devices without any downloads.</li>
+                </ul>
+              </div>
 
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Popular Uses: Study, Workouts, Cooking, and Meetings
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              This flexible web clock is perfect as an online study timer with sound, a presentation timer, or a 25 minute pomodoro timer online. Teachers can use it for classroom activities, chefs can monitor recipes as an online cooking timer, and gym enthusiasts can measure workout intervals without downloading any apps.
-            </p>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Timer Features That Help You Stay on Track
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Our countdown tool operates inside any browser window on Chromebooks, PCs, laptops, and Macs. You can choose from standard alert noises, review your local session history, and run multiple timers by opening other tabs. It offers a clean visual interface that adapts nicely to full screen.
-            </p>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Important Browser and Device Notes
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Because browsers limit timing operations and JavaScript in hidden tabs, we recommend keeping this window visible to ensure audio cues play exactly on schedule. If your system goes to sleep or you close the browser tab, the timer will be paused or lost.
-            </p>
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" /> Popular Use Cases
+                </h3>
+                <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                  <li><strong>Pomodoro Technique:</strong> Use it as an online study timer to run 25-minute work blocks followed by 5-minute breaks.</li>
+                  <li><strong>Cooking & Kitchen:</strong> Run it on your laptop as a hands-free online cooking timer to perfectly time recipes.</li>
+                  <li><strong>Workouts & Intervals:</strong> Set quick sprint intervals or rest periods for your home exercises.</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 

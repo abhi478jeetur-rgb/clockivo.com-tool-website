@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import AdContainer from "@/components/ad-container"
 import Alarm from "@/components/alarm"
 import { AlarmClock, BellRing, Settings, CalendarRange, HelpCircle } from "lucide-react"
 import Link from "next/link"
@@ -110,42 +111,42 @@ export default function AlarmClockPage() {
           <Alarm />
         </div>
 
+        <AdContainer size="leaderboard" className="mb-12" />
+
         {/* SEO On-Page Content Foundations */}
-        <section className="border-t pt-10 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> How to Set Your Alarm Clock
+        <section className="border-t pt-10 mt-12 pb-12">
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold tracking-tight mb-4 text-foreground">
+              How to Set an Online Alarm Clock?
             </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              To set an alarm, pick a target hour and minute using the daily time picker. Give your timer an optional label, select the repeat recurrence if needed, and click the button to save it. The countdown tracks the active time, utilizing local browser storage to persist saved settings.
+            {/* Direct Answer for AI Overviews */}
+            <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
+              To set an online alarm, choose your desired hour and minute, select an alarm sound, give it a label, and click "Save". Keep this browser tab open and your device awake for the alarm to trigger.
             </p>
-          </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" /> Key Features
+                </h3>
+                <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                  <li><strong>Local Device Processing:</strong> Our alarm logic uses your computer's local clock API. This means it operates with perfect timezone precision.</li>
+                  <li><strong>Offline Reliability:</strong> Once the page is loaded, the timer logic runs locally. It will ring even if your internet connection temporarily drops.</li>
+                  <li><strong>No Installations:</strong> A 100% browser-based utility that works flawlessly on Chrome, Edge, Safari, and Firefox.</li>
+                </ul>
+              </div>
 
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Alarm Sound and Volume Settings
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              You can configure your sound settings by clicking the Sound Settings panel. The utility lets you adjust the master volume slider and choose a slow, normal, or fast repetition speed. Choose from a selection of synthesizer audio waves to find a level that works for your environment.
-            </p>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Alarm Schedules for Daily Routines
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Choose whether your alarm triggers once, daily, on weekdays, or on weekends. This feature helps you coordinate study intervals, work blocks, or tasks throughout your week directly inside the browser window without requiring external application downloads.
-            </p>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Important System Settings for Browser Clocks
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              For browser-based tools, please ensure your device is plugged in, unmuted, and that system sleep settings or screen savers are temporarily disabled. Because standard browsers restrict background operations when a laptop is closed or in stand-by, the tab must remain open and awake to play audio.
-            </p>
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" /> Sound Settings
+                </h3>
+                <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                  <li><strong>Custom Audio Tones:</strong> Choose from various digital alarm sounds, from gentle chimes to loud retro sirens.</li>
+                  <li><strong>Volume Control:</strong> Adjust the master volume directly within the utility to suit your environment.</li>
+                  <li><strong>Recurring Schedules:</strong> Set alarms to repeat daily, on weekdays, or just on weekends without resetting them manually.</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 
