@@ -5,3 +5,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Ignored research documents
+my resarch/
