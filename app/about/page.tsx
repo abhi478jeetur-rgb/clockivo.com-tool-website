@@ -1,101 +1,91 @@
-import { Metadata } from "next"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { Sparkles, Leaf, EyeOff, Bolt } from "lucide-react"
+import { Metadata } from 'next';
+import { Card, CardContent } from '@/components/ui/card';
+import { Clock, Shield, Zap, Globe } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: "About Us - Our Philosophy & Story - Clockivo",
-  description: "Learn more about the design and development philosophy of Clockivo. We make browser utilities lightweight, fast, beautiful, and completely offline-compatible.",
+  title: 'About Us | Clockivo - Premium Time Utilities',
+  description: 'Learn about Clockivo, our mission, and why we built the fastest, most reliable, privacy-focused online time utilities.',
   alternates: {
-    canonical: "/about",
-  },
-}
+    canonical: 'https://www.clockivo.com/about'
+  }
+};
 
 export default function AboutPage() {
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "name": "About Clockivo",
-    "description": "Clockivo is a browser-first timing suite engineered to deliver high utility without cognitive overload, visual clutter, or database trackers.",
-    "url": "https://clockivo.com/about",
-    "mainEntity": {
-      "@type": "SoftwareApplication",
-      "name": "Clockivo browser-first timing app",
-      "applicationCategory": "UtilitiesApplication"
-    }
-  }
-
   return (
-    <div className="flex flex-col min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-      />
-      <Header />
-      
-      <main className="flex-1 max-w-4xl mx-auto w-full p-4 sm:p-8">
-        <div className="mb-10 text-center sm:text-left">
-          <span className="text-sm font-semibold tracking-wider text-primary uppercase flex items-center justify-center sm:justify-start gap-1.5 mb-2">
-            <Sparkles className="w-4 h-4" /> Who We Are
-          </span>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+    <div className="container max-w-4xl py-12 px-4 sm:px-6 lg:px-8 mx-auto">
+      <div className="space-y-8">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
             About Clockivo
           </h1>
-          <p className="text-muted-foreground text-base max-w-2xl leading-relaxed mt-2 animate-fade-in">
-            Clockivo is a browser-first timing suite engineered to deliver high utility without cognitive overload, visual clutter, or database trackers.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Your trusted companion for precise, reliable, and privacy-first time management tools.
           </p>
         </div>
 
-        {/* Narrative columns */}
-        <div className="flex flex-col gap-12 pb-12 leading-relaxed">
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-8 border-b pb-10">
-            <div>
-              <h2 className="text-xl font-bold tracking-tight mb-4">Our Core Philosophy</h2>
-              <p className="text-sm text-muted-foreground mb-4">
-                We believe standard tools like clocks, stopwatches, and timers belong on your local processor, not on a remote server. The web is filled with websites requiring logins and tracking scripts just to trigger a simple sound cue.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Clockivo is built differently. By relying entirely on client-side state engines and the HTML Web Audio API, we eliminate background payloads, optimizing your batter life and focus.
-              </p>
-            </div>
-            <div className="flex flex-col gap-4 justify-center bg-muted/20 border rounded-2xl p-6">
-              <div className="flex gap-3">
-                <Leaf className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-sm">Lightweight footprint</h4>
-                  <p className="text-xs text-muted-foreground">Renders instantly under sub-optimal cell networks, minimizing RAM overhead.</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <EyeOff className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-sm">Offline First Privacy</h4>
-                  <p className="text-xs text-muted-foreground">No cookies or tracking pixels tracking your sleep schedule or deadlines.</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <Bolt className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-sm">Hardware Acceleration</h4>
-                  <p className="text-xs text-muted-foreground">Uses hardware clocks directly for perfect second precision.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-bold tracking-tight mb-4">A Modern Approach to Everyday Clocks</h2>
-            <p className="text-sm text-muted-foreground mb-4">
-              Designed as an elegant, clutter-free alternative to traditional site clocks, Clockivo bridges reliable native browser timers with responsive, minimalist design. We combine beautiful micro-animations and immersive full-screen night modes without the bloated background baggage.
+        <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+          <CardContent className="p-8 space-y-6">
+            <h2 className="text-2xl font-bold">Our Mission</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              At Clockivo, we believe that time is your most valuable asset. Our mission is to provide the world with the most precise, user-friendly, and privacy-respecting time utilities available on the web. Whether you need a simple countdown timer for your study sessions, an alarm clock to wake up, or a reliable stopwatch for timing tasks, we've built the perfect digital tools for you.
             </p>
-            <p className="text-sm text-muted-foreground">
-              We look forward to continuously expanding our set of secure offline widgets. Feel free to explore our settings panel, adjust sound parameters, and use us for your daily studying, fitness, cooking, or work routines.
-            </p>
-          </section>
-        </div>
-      </main>
 
-      <Footer />
+            <div className="grid sm:grid-cols-2 gap-6 pt-6">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 text-primary">
+                  <Shield className="h-6 w-6" />
+                  <h3 className="font-semibold text-lg text-foreground">100% Privacy First</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Your data never leaves your device. All alarms, timers, and settings are saved locally in your browser. We don't track your personal alarm schedules or save them on any servers.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 text-primary">
+                  <Zap className="h-6 w-6" />
+                  <h3 className="font-semibold text-lg text-foreground">Lightning Fast</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Built on modern web technologies, Clockivo loads instantly and runs smoothly on any device, from powerful desktops to budget smartphones, without draining your battery.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 text-primary">
+                  <Globe className="h-6 w-6" />
+                  <h3 className="font-semibold text-lg text-foreground">Global Accuracy</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Our World Clock and timing engines are synced with atomic precision, handling complex timezones and Daylight Saving Time (DST) automatically.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 text-primary">
+                  <Clock className="h-6 w-6" />
+                  <h3 className="font-semibold text-lg text-foreground">Always Free</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  We are committed to keeping our core utility tools completely free for everyone, forever. No hidden paywalls, no subscription fees for basic functionality.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+          <CardContent className="p-8 space-y-4">
+            <h2 className="text-2xl font-bold">Who We Are</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Clockivo was born out of a frustration with existing online timer websites that were either cluttered with intrusive ads, incredibly slow, or visually outdated. We are a team of passionate developers and designers who wanted to create a "glassmorphic", premium-feeling workspace utility that professionals, students, and everyday users would actually enjoy keeping open in their browser tabs.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              We continue to iterate and improve Clockivo based on user feedback, constantly adding new features like programmatic SEO tools, offline PWA support, and advanced tracking metrics.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
-  )
+  );
 }
