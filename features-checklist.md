@@ -71,7 +71,7 @@ NotebookLM (जज) के रिव्यू के आधार पर हम�
 - `[x]` **एक्सटर्नल अथॉरिटी और बैकलिंक्स:** 'प्रोडक्ट-लेड लिंक बिल्डिंग' के लिए Embeddable Widgets (जिन्हें दूसरे लोग अपनी साइट पर लगा सकें) बनाना और Product Hunt, SaaSHub आदि पर सबमिट करना [Antigravity ने पूरा किया]।
 - `[x]` **स्केलेबिलिटी की सीमा (Programmatic SEO):** ग्रोथ को लाखों विज़िटर्स तक ले जाने के लिए हज़ारों लॉन्ग-टेल यूज़-केस पेजों (उदा: "25 Minute Pomodoro Timer") को सुरक्षित और 60% अद्वितीय कंटेंट के साथ बनाना [Antigravity ने पूरा किया]।
 - `[x]` **E-E-A-T सिग्नल्स (ब्रांड ऑथॉरिटी):** वेबसाइट पर About Us, Terms of Use, Privacy Policy (**नोट: इसमें Google Analytics ट्रैकिंग का ज़िक्र शामिल करना है**) और संपर्क जानकारी वाले पेज जोड़ना ताकि Google इसे एक विश्वसनीय 'कंपनी' माने [Privacy, About Us, dynamic GA tag जोड़कर पूरा किया]।
-- `[ ]` **यूज़र रिटेंशन (Micro-conversions):** बाउंस रेट कम करने के लिए PWA (Progressive Web App) इंस्टॉल करने का प्रॉम्प्ट, Chrome Extension या हिस्ट्री सेव करने के लिए मुफ्त अकाउंट का फीचर जोड़ना।
+- `[x]` **यूज़र रिटेंशन (Micro-conversions):** बाउंस रेट कम करने के लिए PWA (Progressive Web App) इंस्टॉल करने का प्रॉम्प्ट, Chrome Extension या हिस्ट्री सेव करने के लिए मुफ्त अकाउंट का फीचर जोड़ना [Antigravity ने PWA Prompt और Service Worker सेटअप किया]।
 
 ---
 
