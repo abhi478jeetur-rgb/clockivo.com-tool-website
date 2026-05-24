@@ -81,7 +81,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           <PWAProvider />
           <AudioUnlocker />
         </ThemeProvider>
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
+        <GoogleAnalytics gaId="G-J6H79KR6V6" />
       </body>
     </html>
   );
