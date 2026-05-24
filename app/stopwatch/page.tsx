@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import AdContainer from "@/components/ad-container"
 import Stopwatch from "@/components/stopwatch"
 import { Timer as TimerIcon, HelpCircle } from "lucide-react"
 import Link from "next/link"
@@ -110,42 +111,42 @@ export default function StopwatchPage() {
           <Stopwatch />
         </div>
 
+        <AdContainer size="leaderboard" className="mb-12" />
+
         {/* SEO On-Page Content Foundations */}
-        <section className="border-t pt-10 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> How to Use This Online Stopwatch
+        <section className="border-t pt-10 mt-12 pb-12">
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold tracking-tight mb-4 text-foreground">
+              How to Use an Online Stopwatch?
             </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              To track elapsed time, click the Start button to begin counting in milliseconds. You can press the Lap button to record incremental split times without pausing the main clock timer. Press the Pause button to halt timing, or Reset to clean the display and restore local state registers.
+            {/* Direct Answer for AI Overviews */}
+            <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
+              To use an online stopwatch, simply click the "Start" button to begin counting in milliseconds. Use the "Lap" button to record split times without stopping the main clock. Click "Pause" to temporarily halt timing, or "Reset" to clear all recorded laps.
             </p>
-          </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" /> Key Features
+                </h3>
+                <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                  <li><strong>Millisecond Accuracy:</strong> By leveraging the browser's high-resolution time API (`performance.now()`), the stopwatch guarantees millisecond-level precision without drifting.</li>
+                  <li><strong>Lap & Split Tracking:</strong> Record continuous lap times seamlessly. All splits are displayed in an organized list below the main clock.</li>
+                  <li><strong>Local Storage Memory:</strong> Even if you accidentally refresh the page, your current time and lap history are saved directly in your browser's local memory.</li>
+                </ul>
+              </div>
 
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Common Uses for Study, Sports, Work, and Practice
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              A digital stopwatch in browser benefits many daily routines. It operates smoothly as a stopwatch for study sessions, as an online workout stopwatch to measure athletic sprints, or as a presentation timer. It also assists teachers with classroom activities and hosts with timed online meetings.
-            </p>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Stopwatch Features That Help Track Time Clearly
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Our simple stopwatch online free includes a high-accuracy timing offset count, a clear lap-splitting log sheet, and responsive elements that fit clean full screen layouts. Open multiple tabs to trace overlapping tasks, and view your relative progress step-by-step on Chromebooks or laptops.
-            </p>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Important Browser and Device Notes
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Standard browser stopwatches maintain tracking inside their open tab. If you switch tabs, minimize your window, or lock your computer screen, background CPU throttle rules or device sleep states may pause timing processes. Keep this tab open and active to secure continuous ticking.
-            </p>
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" /> Common Use Cases
+                </h3>
+                <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                  <li><strong>Sports & Workouts:</strong> An excellent online workout stopwatch for measuring athletic sprints, gym rest intervals, or repetitive exercise laps.</li>
+                  <li><strong>Study & Academics:</strong> Perfect for tracking how long it takes to solve specific math problems, complete exam sections, or time science experiments.</li>
+                  <li><strong>Presentations & Meetings:</strong> Keep track of speaker durations in business meetings or monitor rehearsal times for a speech.</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 

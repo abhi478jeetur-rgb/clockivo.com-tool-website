@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import AdContainer from "@/components/ad-container"
 import Clock from "@/components/clock"
 import { Clock as ClockIcon, HelpCircle } from "lucide-react"
 import Link from "next/link"
@@ -110,16 +111,49 @@ export default function WorldClockPage() {
           <Clock defaultMode="digital" />
         </div>
 
+        <AdContainer size="leaderboard" className="mb-12" />
+
         {/* SEO On-Page Content Foundations */}
-        <section className="border-t pt-10 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs md:col-span-2">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> How to Check Time in Different Cities
+        <section className="border-t pt-10 mt-12 pb-12">
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold tracking-tight mb-4 text-foreground">
+              How to Check Time Zones Online?
             </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              To check time zones online, type a location in the search bar or select from our lists of major world cities. The browser world clock for remote teams instantly loads active cards representing current local time by city, keeping offset differences clear so you can view multiple regions at once.
+            {/* Direct Answer for AI Overviews */}
+            <p className="text-lg leading-relaxed font-medium bg-muted/30 p-5 rounded-2xl border border-border/50 shadow-sm mb-6">
+              To check international time zones online, type a city name in the search bar or select it from the predefined list. The world clock will instantly display the current local time, daylight saving offsets, and precise time differences.
             </p>
-            <div className="mt-5 pt-5 border-t border-border/20 grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs text-muted-foreground">
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" /> Key Technical Features
+                </h3>
+                <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                  <li><strong>Native API Integration:</strong> The clock uses the modern `Intl.DateTimeFormat` browser API. This guarantees 100% accurate time-zone conversions without relying on third-party server pings.</li>
+                  <li><strong>Automated DST Adjustments:</strong> The tool automatically recalculates offsets when a region enters or exits Daylight Saving Time (DST).</li>
+                  <li><strong>Multi-City Tracking:</strong> Add multiple global cities to your dashboard. All clocks synchronize in real-time seamlessly within the browser.</li>
+                </ul>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" /> Popular Uses
+                </h3>
+                <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                  <li><strong>Remote Teams:</strong> Ensure your distributed workers are aligned. Check if a colleague in London or Tokyo is currently in working hours before sending a message.</li>
+                  <li><strong>Travel Planning:</strong> Easily understand the time difference at your destination to manage jetlag and coordinate flights.</li>
+                  <li><strong>Global Events:</strong> Accurately sync your calendar for international sports broadcasts, keynote presentations, or stock market openings.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs mt-8">
+            <h2 className="text-lg font-bold tracking-tight mb-4 text-foreground">
+              Major Time Zone Reference Guide
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs text-muted-foreground">
               <div>
                 <span className="font-bold text-foreground font-mono block mb-2 text-[11px] uppercase tracking-wider text-primary">Americas</span>
                 <ul className="space-y-1.5">
@@ -167,33 +201,6 @@ export default function WorldClockPage() {
                 </ul>
               </div>
             </div>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Useful for Remote Work, Meetings, and Travel Planning
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Coordination becomes simple with an online world clock for meetings. Remote workers, online trainers, and educators can align clocks across time zone transitions smoothly. It serves as a live timezone tracker for global corporations to schedule tasks and compare time zones online.
-            </p>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> World Clock Features That Help You Compare Time Zones
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Clockivo offers a high-precision digital world clock in browser that fits neatly on Chromebooks, PCs, and laptops. You can toggle analog views, track local coordinate offsets relative to UTC, and maintain list sequences easily. There is no external software requirement.
-            </p>
-          </div>
-
-          <div className="bg-card/40 p-5 rounded-2xl border border-border/30 shadow-xs md:col-span-2">
-            <h2 className="text-lg font-bold tracking-tight mb-2.5 flex items-center gap-2 text-foreground">
-              <span className="w-2 h-2 rounded-full bg-primary" /> Important Notes About Time Zones and Daylight Saving Time
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Please note that seasonal daylight saving changes can temporarily alter your local city offset distances. Our tool parses regional browser localization settings recursively. Check standard guidelines when scheduling key events around transition dates if regional parameters shift.
-            </p>
           </div>
         </section>
 
