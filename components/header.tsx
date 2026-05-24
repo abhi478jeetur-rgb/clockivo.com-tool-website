@@ -29,6 +29,7 @@ export default function Header() {
           <Link href="/digital-clock" className="hover:text-foreground transition-colors">Clock (Digital)</Link>
           <Link href="/analog-clock" className="hover:text-foreground transition-colors">Clock (Analog)</Link>
           <Link href="/world-clock" className="hover:text-foreground transition-colors">World Clock</Link>
+          <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
         </nav>
         <ModeToggle />
       </div>

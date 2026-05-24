@@ -43,6 +43,9 @@ export default function Footer() {
           <h4 className="text-sm font-semibold text-foreground mb-4">Support</h4>
           <ul className="flex flex-col gap-2.5 text-sm text-muted-foreground">
             <li>
+              <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
+            </li>
+            <li>
               <Link href="/help" className="hover:text-primary transition-colors">Help & FAQ</Link>
             </li>
             <li>
