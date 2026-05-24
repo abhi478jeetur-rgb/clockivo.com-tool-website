@@ -1,29 +1,6 @@
-const CACHE_NAME = 'clockivo-pwa-cache-v1';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/manifest.json',
-  '/icon.svg',
-  '/about',
-  '/help',
-  '/privacy-policy',
-  '/terms',
-  '/world-clock',
-  '/alarm-clock',
-  '/digital-clock',
-  '/analog-clock',
-  '/stopwatch',
-  '/timer'
-];
+const CACHE_NAME = 'clockivo-pwa-cache-v2';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      // Warm up the cache
-      return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-        console.warn('Pre-caching some assets failed (expected in dynamic server dev settings):', err);
-      });
-    })
-  );
   self.skipWaiting();
 });
 
@@ -41,27 +18,53 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Only handle HTTP/HTTPS, skip other schemes (e.g., chrome-extension)
+  // Only handle HTTP/HTTPS requests
   if (!event.request.url.startsWith('http')) return;
+  // Ignore API requests or external tracking scripts
+  if (event.request.url.includes('/api/') || event.request.url.includes('googletagmanager.com')) return;
 
+  // 1. For HTML Documents (Navigation): Network First, Fallback to Cache
+  if (event.request.mode === 'navigate' || (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'))) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // 2. For Immutable Next.js Static Assets (_next/static/): Cache First, Fallback to Network
+  if (event.request.url.includes('/_next/static/')) {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) return cachedResponse;
+        return fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+          }
+          return networkResponse;
+        });
+      })
+    );
+    return;
+  }
+
+  // 3. For Everything Else (Images, Manifest, etc.): Stale-While-Revalidate
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((networkResponse) => {
-        // Return response from network if successful
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+      const fetchPromise = fetch(event.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse.clone()));
         }
         return networkResponse;
-      }).catch(() => {
-        // Fallback for offline if browser fetch fails
-        return caches.match('/');
-      });
+      }).catch(() => {});
+      
+      return cachedResponse || fetchPromise;
     })
   );
 });
