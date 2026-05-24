@@ -9,6 +9,8 @@ import { Play, Square, RotateCcw, Plus, History } from "lucide-react"
 import * as audioLib from "@/lib/audio"
 import { SoundSettings } from "./sound-settings"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
+import { motion, AnimatePresence } from "motion/react"
+import { trackTimerStarted } from "@/lib/analytics"
 
 const playAlarmSound = () => {
   if (audioLib && typeof audioLib.playAlarmSound === "function") {
@@ -162,6 +164,7 @@ export default function Timer() {
         setTimeLeft(total)
         setIsEditing(false)
         setIsRunning(true)
+        trackTimerStarted(total)
       }
     } else {
       setIsRunning(true)
@@ -199,6 +202,7 @@ export default function Timer() {
     setIsEditing(false)
     setIsRunning(true)
     endTimeRef.current = null
+    trackTimerStarted(total)
   }
 
   const addTime = (minutes: number) => {
@@ -285,7 +289,12 @@ export default function Timer() {
           </div>
         </div>
       ) : (
-        <div className="relative flex items-center justify-center w-64 h-64 sm:w-80 sm:h-80 mb-12 select-none">
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0 }} 
+          animate={{ scale: 1, opacity: 1 }} 
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="relative flex items-center justify-center w-64 h-64 sm:w-80 sm:h-80 mb-12 select-none"
+        >
           {/* SVG Progress Circle with neat transitions */}
           <svg className="absolute w-full h-full -rotate-90 scale-x-[-1]" viewBox="0 0 240 240">
             {/* Background track */}
@@ -324,7 +333,7 @@ export default function Timer() {
               Edit
             </span>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Control Buttons */}
@@ -364,10 +373,18 @@ export default function Timer() {
           <div>
             <h3 className="text-xs font-bold text-muted-foreground mb-4 uppercase tracking-wider text-center">Quick Presets</h3>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-              {[1, 3, 5, 10, 15, 30, 45, 60].map(min => (
-                <Button key={min} variant="outline" onClick={() => addPreset(min)} className="font-mono text-sm sm:text-base">
-                  {min}m
-                </Button>
+              {/* Added index to map for stagger effect */}
+              {([1, 3, 5, 10, 15, 30, 45, 60]).map((min, idx) => (
+                <motion.div 
+                  key={min}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                >
+                  <Button variant="outline" onClick={() => addPreset(min)} className="font-mono text-sm sm:text-base">
+                    {min}m
+                  </Button>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -401,21 +418,33 @@ export default function Timer() {
       )}
       
       {history.length > 0 && !isRunning && (
-        <div className="w-full max-w-md mt-16 px-4 sm:px-0">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md mt-16 px-4 sm:px-0"
+        >
             <h3 className="text-xs font-bold text-muted-foreground mb-4 uppercase tracking-wider text-center flex items-center justify-center gap-2"><History className="w-4 h-4"/> Session History</h3>
             <div className="h-[200px] overflow-y-auto border rounded-xl p-2 bg-card shadow-sm">
+                <AnimatePresence>
                 {history.map(s => {
                     const dDate = new Date(s.completedAt);
                     return (
-                    <div key={s.id} className="flex justify-between items-center p-3 border-b border-border/50 last:border-0 hover:bg-muted/50 rounded-lg text-sm transition-colors">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0 }}
+                        key={s.id} 
+                        className="flex justify-between items-center p-3 border-b border-border/50 last:border-0 hover:bg-muted/50 rounded-lg text-sm transition-colors"
+                    >
                         <div className="flex flex-col">
                             <span className="font-semibold text-foreground">{Math.floor(s.duration / 60)}m {s.duration % 60}s</span>
                             <span className="text-xs text-muted-foreground">{dDate.toLocaleDateString()} {dDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
                         </div>
-                    </div>
+                    </motion.div>
                 )})}
+                </AnimatePresence>
             </div>
-        </div>
+        </motion.div>
       )}
     </Card>
   )

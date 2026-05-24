@@ -26,6 +26,8 @@ const getSoundSettings = () => {
 }
 import { SoundSettings } from "./sound-settings"
 import dynamic from "next/dynamic"
+import { motion, AnimatePresence } from "motion/react"
+import { trackAlarmSet } from "@/lib/analytics"
 
 const CustomMediaHub = dynamic(() => import("./custom-media-hub"), { ssr: false })
 
@@ -284,6 +286,12 @@ export default function Alarm() {
             const timeB = parseInt(b.hours)*60 + parseInt(b.minutes)
             return timeA - timeB
         }))
+
+        trackAlarmSet({
+          recurrence: newRecurrence,
+          has_label: !!newLabel && newLabel !== "Alarm",
+          is_tomorrow: isTomorrow,
+        })
     }
     setIsDialogOpen(false)
   }
@@ -371,12 +379,18 @@ export default function Alarm() {
             <Button onClick={openAddAlarm} variant="secondary">Add your first alarm</Button>
           </div>
         ) : (
-          processedAlarms.map(alarm => (
-            <div 
-              key={alarm.id} 
-              className={`flex items-center justify-between p-4 sm:p-6 rounded-xl border transition-colors ${alarm.enabled ? 'bg-card border-primary/20 shadow-sm' : 'bg-muted/30 border-transparent opacity-60'}`}
-            >
-              <div className="flex flex-col gap-1">
+          <AnimatePresence>
+            {processedAlarms.map(alarm => (
+              <motion.div 
+                layout
+                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                key={alarm.id} 
+                className={`flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 rounded-2xl border transition-all duration-300 gap-4 sm:gap-0 ${alarm.enabled ? 'bg-card/60 backdrop-blur-md border-primary/30 shadow-[0_4px_20px_rgb(0,0,0,0.05)] dark:shadow-[0_4px_20px_rgba(255,255,255,0.02)]' : 'bg-muted/20 border-transparent opacity-60 grayscale-[0.5]'}`}
+              >
+                <div className="flex flex-col gap-1 w-full sm:w-auto">
                 <div className="flex items-center gap-3">
                   <span className="text-4xl sm:text-5xl font-mono font-bold tracking-tight">
                     {alarm.hours}:{alarm.minutes}
@@ -410,11 +424,12 @@ export default function Alarm() {
                 <Switch 
                   checked={alarm.enabled} 
                   onCheckedChange={(c) => toggleAlarm(alarm.id, c)} 
-                  className="scale-110 ml-2"
+                  className="scale-110 ml-auto sm:ml-2"
                 />
               </div>
-            </div>
-          ))
+            </motion.div>
+          ))}
+          </AnimatePresence>
         )}
       </div>
 
