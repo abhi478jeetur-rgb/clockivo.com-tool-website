@@ -5,7 +5,8 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Play, Square, RotateCcw, Plus, History } from "lucide-react"
+import { Play, Square, RotateCcw, Plus, History, BellRing } from "lucide-react"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 import * as audioLib from "@/lib/audio"
 import { SoundSettings } from "./sound-settings"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
@@ -27,6 +28,7 @@ export default function Timer({ defaultDuration }: { defaultDuration?: number } 
   const [initialTime, setInitialTime] = useState(resolvedDuration)
   const [timeLeft, setTimeLeft] = useState(resolvedDuration)
   const [isRunning, setIsRunning] = useState(false)
+  const [isRinging, setIsRinging] = useState(false)
 
   // Edit mode state — skip editing when a duration is pre-set
   const [isEditing, setIsEditing] = useState(!defaultDuration || defaultDuration <= 0)
@@ -104,6 +106,7 @@ export default function Timer({ defaultDuration }: { defaultDuration?: number } 
 
     playAlarmSound()
     setTimeout(playAlarmSound, 2000)
+    setIsRinging(true)
   }, [history])
 
   useEffect(() => {
@@ -169,10 +172,18 @@ export default function Timer({ defaultDuration }: { defaultDuration?: number } 
         setIsEditing(false)
         setIsRunning(true)
         trackTimerStarted(total)
+      } else {
+        alert("Please set a timer duration greater than 0.")
       }
     } else {
-      setIsRunning(true)
+      if (timeLeft > 0) {
+        setIsRunning(true)
+      }
     }
+  }
+
+  const stopRinging = () => {
+    setIsRinging(false)
   }
 
   const stopTimer = () => {
@@ -450,6 +461,27 @@ export default function Timer({ defaultDuration }: { defaultDuration?: number } 
             </div>
         </motion.div>
       )}
+
+      {/* Timer Completion Modal */}
+      <Dialog open={isRinging} onOpenChange={setIsRinging}>
+        <DialogContent onInteractOutside={(e) => e.preventDefault()} className="sm:max-w-md rounded-[2rem] p-8 flex flex-col items-center gap-6 justify-center bg-card ring-8 ring-primary/20 shadow-2xl animate-in zoom-in duration-300">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
+            <BellRing className="w-10 h-10 text-primary animate-bounce" />
+          </div>
+          <div className="flex flex-col items-center gap-2 text-center w-full">
+            <h2 className="text-4xl font-mono font-bold tabular-nums">Time's Up!</h2>
+            <p className="text-lg text-muted-foreground mt-2">Your timer has finished.</p>
+          </div>
+          <div className="flex flex-col w-full gap-3 mt-4">
+            <Button size="lg" onClick={stopRinging} className="w-full rounded-full h-15 text-xl shadow-lg animate-pulse">
+              STOP
+            </Button>
+            <Button size="lg" variant="secondary" onClick={() => { stopRinging(); resetTimer(); startTimer(); }} className="w-full rounded-full h-13 text-lg">
+              <RotateCcw className="w-5 h-5 mr-2" /> Restart
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Card>
   )
 }
