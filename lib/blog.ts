@@ -10,6 +10,8 @@ export interface BlogPostFrontmatter {
   date: string
   author: string
   tags: string[]
+  videoUrl?: string
+  imageUrl?: string
 }
 
 export interface BlogPost {

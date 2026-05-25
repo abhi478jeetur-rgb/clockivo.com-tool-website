@@ -52,7 +52,7 @@ export default function Footer() {
               <Link href="/about" className="hover:text-primary transition-colors">About Us</Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-primary transition-colors">Contact Us</Link>
+              <a href="mailto:support@clockivo.com" className="hover:text-primary transition-colors">Contact Us</a>
             </li>
           </ul>
         </div>

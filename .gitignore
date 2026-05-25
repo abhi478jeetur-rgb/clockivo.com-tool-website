@@ -8,3 +8,7 @@ coverage/
 
 # Ignored research documents
 my resarch/
+
+# Ignored Chrome Extension builds (if testing locally)
+# Though we keep the source code, we can optionally ignore it from Next.js Vercel builds
+/chrome-extension/

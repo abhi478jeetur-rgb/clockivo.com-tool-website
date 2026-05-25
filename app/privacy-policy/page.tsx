@@ -71,7 +71,7 @@ export default function PrivacyPolicyPage() {
 
             <h3>8. Contact Information</h3>
             <p>
-              To ask questions or comment about this privacy policy and our privacy practices, contact us via email at <strong>privacy@clockivo.com</strong>.
+              To ask questions or comment about this privacy policy and our privacy practices, contact us via email at <strong>support@clockivo.com</strong>.
             </p>
           </CardContent>
         </Card>
