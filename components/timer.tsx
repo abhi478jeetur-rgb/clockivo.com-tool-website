@@ -463,8 +463,8 @@ export default function Timer({ defaultDuration }: { defaultDuration?: number } 
       )}
 
       {/* Timer Completion Modal */}
-      <Dialog open={isRinging} onOpenChange={setIsRinging}>
-        <DialogContent onInteractOutside={(e) => e.preventDefault()} className="sm:max-w-md rounded-[2rem] p-8 flex flex-col items-center gap-6 justify-center bg-card ring-8 ring-primary/20 shadow-2xl animate-in zoom-in duration-300">
+      <Dialog open={isRinging} onOpenChange={setIsRinging} disablePointerDismissal>
+        <DialogContent className="sm:max-w-md rounded-[2rem] p-8 flex flex-col items-center gap-6 justify-center bg-card ring-8 ring-primary/20 shadow-2xl animate-in zoom-in duration-300">
           <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center animate-pulse">
             <BellRing className="w-10 h-10 text-primary animate-bounce" />
           </div>

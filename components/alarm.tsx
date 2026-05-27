@@ -443,8 +443,8 @@ export default function Alarm() {
       <CustomMediaHub />
 
       {/* Add Alarm Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent onInteractOutside={(e) => e.preventDefault()} className="sm:max-w-md border-none sm:border shadow-2xl">
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} disablePointerDismissal>
+        <DialogContent className="sm:max-w-md border-none sm:border shadow-2xl">
           <DialogHeader className="flex flex-row items-center justify-between">
             <DialogTitle>{editingId ? "Edit Alarm" : "Set New Alarm"}</DialogTitle>
             <Button variant="outline" size="sm" onClick={playAlarmSound} className="mt-0">
