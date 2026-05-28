@@ -3,7 +3,7 @@
   <video src="https://ik.imagekit.io/a57jpcchpv/hubber%20web/clock.com/night_video-ezgif.com-gif-maker.mp4?updatedAt=1777218846549" autoplay loop muted playsinline width="100%" style="border-radius: 12px;"></video>
   <br />
   <br />
-  <h1>⏰ Clockivo</h1>
+  <h1> Clockivo</h1>
   <p><b>The ultimate free timer, stopwatch, and alarm for deep work.</b></p>
   <p>
     <a href="https://clockivo.com">Website</a> •
