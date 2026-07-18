@@ -39,7 +39,7 @@ export function useKeyboardShortcut(
         return
       }
 
-      const pressedCode = e.code              // e.g., "Space", "KeyR", "Escape"
+      const pressedCode = e.code              // e.g.
       const pressedKey = e.key.toLowerCase()  // e.g., " ", "r", "escape"
       const targetKeys = Array.isArray(keys) ? keys : [keys]
 
