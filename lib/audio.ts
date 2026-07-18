@@ -129,4 +129,4 @@ export const playAlarmSound = () => {
 export const playFeedbackClick = () => {
   // Safe no-op to completely eliminate any potential UI errors or audio interface conflicts
 };
-
+-----
