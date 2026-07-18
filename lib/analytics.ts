@@ -1,6 +1,6 @@
 "use client"
 
-/**
+/*
  * Clockivo Analytics Utility
  * Thin wrapper around Google Analytics 4 (gtag.js) for custom event tracking.
  * All calls are guarded so the app works identically if GA is blocked or not loaded.
