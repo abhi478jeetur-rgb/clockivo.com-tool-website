@@ -50,7 +50,7 @@ async function run() {
   // Add pSEO page URLs
   pSEOPagesList.forEach(p => urls.push(`${BASE_URL}/timer/${p}`));
 
-  // Add blog index
+  // Add blog  index
   urls.push(`${BASE_URL}/blog`);
 
   // Add blog post URLs by reading content/blog folder
