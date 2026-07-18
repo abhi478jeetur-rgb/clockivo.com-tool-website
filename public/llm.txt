@@ -4,7 +4,7 @@ Clockivo is an elegant, lightweight, and completely private timing suite built s
 
 We engineered Clockivo to eliminate the heavyweight asset loads of legacy web clock sites, using synthetically compiled audio waves through the native HTML Web Audio API rather than bloated external sound files.
 
----
+---------------
 
 ## Core Tools and Canonical Paths
 
@@ -29,7 +29,7 @@ We engineered Clockivo to eliminate the heavyweight asset loads of legacy web cl
 - **Dynamic World Clock**: [https://clockivo.com/world-clock](https://clockivo.com/world-clock)
   Track real-time timezone offsets globally. Features daylight saving adjustments built on high-precision native internationalization (Intl) APIs.
 
----
+-----------------
 
 ## Architecture and Technical Foundations
 
